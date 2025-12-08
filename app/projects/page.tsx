@@ -1,6 +1,10 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { Navbar } from '@/components/ui/navbar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { SplitHero } from '@/components/ui/split-hero';
+import { MissionCoreValues } from '@/components/ui/mission-core-values';
 import { Building2, FileCheck, Landmark, Wallet, Home, Paintbrush, Ruler, UtensilsCrossed, Building, Wrench } from 'lucide-react';
 
 export default function OurServicesPage() {
@@ -87,6 +91,36 @@ export default function OurServicesPage() {
         },
     ];
 
+    const renderServiceCard = (service: typeof services[0], index: number) => {
+        const Icon = service.icon;
+        return (
+            <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05, duration: 0.5 }}
+            >
+                <Card className="bg-white border border-gray-200 shadow-md hover:shadow-2xl hover:border-blue-300 transition-all duration-300 hover:scale-105 group overflow-hidden relative h-full min-h-[280px]">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+                    <CardHeader className="relative z-10">
+                        <div className={`w-16 h-16 ${service.iconBg} rounded-xl mb-4 flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+                            <Icon className={`w-8 h-8 ${service.textColor}`} />
+                        </div>
+                        <CardTitle className="text-gray-900 text-2xl group-hover:text-blue-700 transition-colors">
+                            {service.title}
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="relative z-10">
+                        <CardDescription className="text-gray-700 leading-relaxed">
+                            {service.description}
+                        </CardDescription>
+                    </CardContent>
+                </Card>
+            </motion.div>
+        );
+    };
+
     return (
         <main className="min-h-screen bg-white">
             <Navbar />
@@ -117,51 +151,27 @@ export default function OurServicesPage() {
                     </p>
                 </div>
 
-                {/* Services Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {services.map((service, index) => {
-                        const Icon = service.icon;
-                        return (
-                            <Card
-                                key={index}
-                                className="bg-white border border-gray-200 shadow-md hover:shadow-2xl hover:border-blue-300 transition-all duration-300 hover:scale-105 group overflow-hidden relative"
-                            >
-                                {/* Animated gradient background on hover */}
-                                <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-
-                                <CardHeader className="relative z-10">
-                                    {/* Icon with animated background */}
-                                    <div className={`w-16 h-16 ${service.iconBg} rounded-xl mb-4 flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
-                                        <Icon className={`w-8 h-8 ${service.textColor}`} />
-                                    </div>
-
-                                    <CardTitle className="text-gray-900 text-2xl group-hover:text-blue-700 transition-colors">
-                                        {service.title}
-                                    </CardTitle>
-                                </CardHeader>
-
-                                <CardContent className="relative z-10">
-                                    <CardDescription className="text-gray-700 leading-relaxed">
-                                        {service.description}
-                                    </CardDescription>
-
-                                    {/* Learn More Button - appears on hover */}
-                                    <div className="mt-4 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                                        <button className={`text-sm font-semibold ${service.textColor} hover:underline flex items-center gap-2`}>
-                                            Learn More
-                                            <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        );
-                    })}
+                {/* Services Grid - First 8 cards in 4 columns */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    {services.slice(0, 8).map((service, index) => renderServiceCard(service, index))}
                 </div>
 
+                {/* Last 2 cards centered */}
+                <div className="flex flex-col md:flex-row justify-center items-stretch gap-6">
+                    {services.slice(8).map((service, index) => (
+                        <div key={index + 8} className="w-full md:w-[calc(25%-12px)] h-full">
+                            {renderServiceCard(service, index + 8)}
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Mission & Core Values Section */}
+            <MissionCoreValues />
+
+            <div className="max-w-7xl mx-auto px-6 py-20">
                 {/* Call to Action Section */}
-                <div className="mt-20 bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-12 text-center space-y-6">
+                <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-12 text-center space-y-6">
                     <h3 className="text-3xl md:text-4xl font-bold text-white">
                         Ready to Get Started?
                     </h3>

@@ -27,8 +27,8 @@ export function Navbar() {
 
     const navItems = [
         { name: 'Home', href: '/' },
-        { name: 'About Us', href: '/about' },
         { name: 'Our Services', href: '/projects' },
+        { name: 'Packages', href: '/packages' },
         { name: 'Gallery', href: '/gallery' },
     ];
 
