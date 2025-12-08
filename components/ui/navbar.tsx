@@ -7,8 +7,14 @@ import { FlowButton } from './flow-button';
 
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const pathname = usePathname();
     const isHome = pathname === '/';
+
+    // Close mobile menu when route changes
+    useEffect(() => {
+        setIsMobileMenuOpen(false);
+    }, [pathname]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -73,21 +79,57 @@ export function Navbar() {
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <button className={`md:hidden p-2 rounded-lg transition-colors ${mobileMenuClasses}`}>
+                    <button
+                        className={`md:hidden p-2 rounded-lg transition-colors ${mobileMenuClasses}`}
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+                        aria-expanded={isMobileMenuOpen}
+                    >
                         <svg
-                            className="w-6 h-6"
+                            className="w-6 h-6 transition-transform duration-300"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
                         >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 6h16M4 12h16M4 18h16"
-                            />
+                            {isMobileMenuOpen ? (
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            ) : (
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M4 6h16M4 12h16M4 18h16"
+                                />
+                            )}
                         </svg>
                     </button>
+                </div>
+
+                {/* Mobile Menu Dropdown */}
+                <div
+                    className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                        }`}
+                >
+                    <div className="px-4 py-4 space-y-3 border-t border-gray-200/50">
+                        {navItems.map((item) => (
+                            <Link
+                                key={item.name}
+                                href={item.href}
+                                className={`block py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 ${mobileMenuClasses}`}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                        <div className="pt-2">
+                            <FlowButton text="Contact Us" dark={true} />
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
