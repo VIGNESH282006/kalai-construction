@@ -14,6 +14,7 @@ import { motion } from 'framer-motion';
 interface ScrollExpandMediaProps {
     mediaType?: 'video' | 'image';
     mediaSrc: string;
+    mobileMediaSrc?: string;
     posterSrc?: string;
     bgImageSrc: string;
     title?: string;
@@ -26,6 +27,7 @@ interface ScrollExpandMediaProps {
 const ScrollExpandMedia = ({
     mediaType = 'video',
     mediaSrc,
+    mobileMediaSrc,
     posterSrc,
     bgImageSrc,
     title,
@@ -169,6 +171,9 @@ const ScrollExpandMedia = ({
     const firstWord = title ? title.split(' ')[0] : '';
     const restOfTitle = title ? title.split(' ').slice(1).join(' ') : '';
 
+    // Use mobile video source if available and on mobile
+    const currentMediaSrc = isMobileState && mobileMediaSrc ? mobileMediaSrc : mediaSrc;
+
     return (
         <div
             ref={sectionRef}
@@ -210,19 +215,19 @@ const ScrollExpandMedia = ({
                                 }}
                             >
                                 {mediaType === 'video' ? (
-                                    mediaSrc.includes('youtube.com') ? (
+                                    currentMediaSrc.includes('youtube.com') ? (
                                         <div className='relative w-full h-full pointer-events-none'>
                                             <iframe
                                                 width='100%'
                                                 height='100%'
                                                 src={
-                                                    mediaSrc.includes('embed')
-                                                        ? mediaSrc +
-                                                        (mediaSrc.includes('?') ? '&' : '?') +
+                                                    currentMediaSrc.includes('embed')
+                                                        ? currentMediaSrc +
+                                                        (currentMediaSrc.includes('?') ? '&' : '?') +
                                                         'autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&disablekb=1&modestbranding=1'
-                                                        : mediaSrc.replace('watch?v=', 'embed/') +
+                                                        : currentMediaSrc.replace('watch?v=', 'embed/') +
                                                         '?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&disablekb=1&modestbranding=1&playlist=' +
-                                                        mediaSrc.split('v=')[1]
+                                                        currentMediaSrc.split('v=')[1]
                                                 }
                                                 className='w-full h-full rounded-xl'
                                                 frameBorder='0'
@@ -244,7 +249,7 @@ const ScrollExpandMedia = ({
                                     ) : (
                                         <div className='relative w-full h-full pointer-events-none'>
                                             <video
-                                                src={mediaSrc}
+                                                src={currentMediaSrc}
                                                 poster={posterSrc}
                                                 autoPlay
                                                 muted

@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FlowButton } from './flow-button';
+import { useContactPopup } from './contact-popup';
 
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const pathname = usePathname();
     const isHome = pathname === '/';
+    const { openPopup } = useContactPopup();
 
     // Close mobile menu when route changes
     useEffect(() => {
@@ -47,6 +49,11 @@ export function Navbar() {
     // Always use dark text for mobile menu
     const mobileMenuClasses = 'text-gray-900 hover:bg-gray-100';
 
+    const handleContactClick = () => {
+        setIsMobileMenuOpen(false);
+        openPopup();
+    };
+
     return (
         <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navClasses}`}>
             <div className="max-w-7xl mx-auto px-6 py-4">
@@ -62,20 +69,26 @@ export function Navbar() {
 
                     {/* Navigation Items */}
                     <div className="hidden md:flex items-center gap-8">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.name}
-                                href={item.href}
-                                className={`text-sm font-semibold transition-all duration-300 hover:scale-105 ${textClasses}`}
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
+                        {navItems.map((item) => {
+                            const isActive = pathname === item.href;
+                            return (
+                                <Link
+                                    key={item.name}
+                                    href={item.href}
+                                    className={`text-sm font-semibold transition-all duration-300 hover:scale-105 ${isActive
+                                            ? 'text-blue-600'
+                                            : textClasses
+                                        }`}
+                                >
+                                    {item.name}
+                                </Link>
+                            );
+                        })}
                     </div>
 
                     {/* Contact Us Button */}
                     <div className="hidden md:block">
-                        <FlowButton text="Contact Us" dark={true} />
+                        <FlowButton text="Contact Us" dark={true} onClick={handleContactClick} />
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -116,18 +129,24 @@ export function Navbar() {
                         }`}
                 >
                     <div className="px-4 py-4 space-y-3 border-t border-gray-200/50">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.name}
-                                href={item.href}
-                                className={`block py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 ${mobileMenuClasses}`}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
+                        {navItems.map((item) => {
+                            const isActive = pathname === item.href;
+                            return (
+                                <Link
+                                    key={item.name}
+                                    href={item.href}
+                                    className={`block py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 ${isActive
+                                            ? 'text-blue-600 bg-blue-50'
+                                            : mobileMenuClasses
+                                        }`}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                    {item.name}
+                                </Link>
+                            );
+                        })}
                         <div className="pt-2">
-                            <FlowButton text="Contact Us" dark={true} />
+                            <FlowButton text="Contact Us" dark={true} onClick={handleContactClick} />
                         </div>
                     </div>
                 </div>

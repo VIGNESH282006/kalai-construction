@@ -6,8 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { SplitHero } from '@/components/ui/split-hero';
 import { MissionCoreValues } from '@/components/ui/mission-core-values';
 import { Building2, FileCheck, Landmark, Wallet, Home, Paintbrush, Ruler, UtensilsCrossed, Building, Wrench } from 'lucide-react';
+import { useContactPopup } from '@/components/ui/contact-popup';
 
 export default function OurServicesPage() {
+    const { openPopup } = useContactPopup();
+
     const services = [
         {
             title: 'Building Construction',
@@ -101,7 +104,7 @@ export default function OurServicesPage() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05, duration: 0.5 }}
             >
-                <Card className="bg-white border border-gray-200 shadow-md hover:shadow-2xl hover:border-blue-300 transition-all duration-300 hover:scale-105 group overflow-hidden relative h-full min-h-[280px]">
+                <Card className="bg-white border border-gray-200 shadow-md hover:shadow-2xl hover:border-blue-300 transition-all duration-300 hover:scale-105 group overflow-hidden relative h-[320px] flex flex-col">
                     <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
                     <CardHeader className="relative z-10">
                         <div className={`w-16 h-16 ${service.iconBg} rounded-xl mb-4 flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
@@ -111,8 +114,8 @@ export default function OurServicesPage() {
                             {service.title}
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="relative z-10">
-                        <CardDescription className="text-gray-700 leading-relaxed">
+                    <CardContent className="relative z-10 flex-1">
+                        <CardDescription className="text-gray-700 leading-relaxed line-clamp-4">
                             {service.description}
                         </CardDescription>
                     </CardContent>
@@ -180,12 +183,18 @@ export default function OurServicesPage() {
                         turn your vision into reality with quality craftsmanship and timely delivery.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-                        <button className="bg-white text-blue-700 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
+                        <button
+                            onClick={openPopup}
+                            className="bg-white text-blue-700 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer"
+                        >
                             Request a Quote
                         </button>
-                        <button className="bg-blue-700/50 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700/70 transition-all duration-300 border-2 border-white/30 hover:scale-105">
+                        <a
+                            href="tel:+917448556198"
+                            className="bg-blue-700/50 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700/70 transition-all duration-300 border-2 border-white/30 hover:scale-105"
+                        >
                             Call Us Now
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -193,18 +202,18 @@ export default function OurServicesPage() {
                 <div className="mt-16 text-center space-y-4">
                     <h4 className="text-2xl font-bold text-gray-900">Get In Touch</h4>
                     <div className="flex flex-col md:flex-row justify-center gap-8 text-gray-700">
-                        <div className="flex items-center justify-center gap-2">
+                        <a href="tel:+917448556198" className="flex items-center justify-center gap-2 hover:text-blue-600 transition-colors">
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                             </svg>
                             <span>+91 74485 56198</span>
-                        </div>
-                        <div className="flex items-center justify-center gap-2">
+                        </a>
+                        <a href="mailto:kalaiconstructionkc@gmail.com" className="flex items-center justify-center gap-2 hover:text-blue-600 transition-colors">
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
                             <span>kalaiconstructionkc@gmail.com</span>
-                        </div>
+                        </a>
                         <div className="flex items-center justify-center gap-2">
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />

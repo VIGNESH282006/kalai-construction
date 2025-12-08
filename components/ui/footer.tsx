@@ -1,6 +1,7 @@
 import { Facebook, Instagram, Linkedin, Phone, Mail, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ContactButton } from './contact-button';
 
 interface FooterProps {
     logo?: {
@@ -55,7 +56,7 @@ export function Footer({
                             <a href="#" className="bg-pink-600 p-2 rounded-full hover:bg-pink-700 transition-colors">
                                 <Instagram className="w-4 h-4 text-white" />
                             </a>
-                            <a href="#" className="bg-green-500 p-2 rounded-full hover:bg-green-600 transition-colors">
+                            <a href="tel:+917448556198" className="bg-green-500 p-2 rounded-full hover:bg-green-600 transition-colors">
                                 <Phone className="w-4 h-4 text-white" />
                             </a>
                         </div>
@@ -67,11 +68,11 @@ export function Footer({
                         <ul className="space-y-4 text-gray-400 text-sm">
                             <li className="flex items-start gap-3">
                                 <Phone className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                                <span>+91 74485 56198</span>
+                                <a href="tel:+917448556198" className="hover:text-white transition-colors">+91 74485 56198</a>
                             </li>
                             <li className="flex items-start gap-3">
                                 <Mail className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                                <span>kalaiconstructionkc@gmail.com</span>
+                                <a href="mailto:kalaiconstructionkc@gmail.com" className="hover:text-white transition-colors">kalaiconstructionkc@gmail.com</a>
                             </li>
                             <li className="flex items-start gap-3">
                                 <MapPin className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
@@ -85,32 +86,45 @@ export function Footer({
                         </ul>
                     </div>
 
-                    {/* Column 3: Quick Links */}
-                    <div className="lg:col-span-1">
-                        <h3 className="text-lg font-bold mb-6 uppercase tracking-wider">Quick Links</h3>
-                        <ul className="space-y-3 text-gray-400 text-sm">
-                            <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-                            <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
-                            <li><Link href="/projects" className="hover:text-white transition-colors">Projects</Link></li>
-                            <li><Link href="/gallery" className="hover:text-white transition-colors">Gallery</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Contact Us</Link></li>
-                        </ul>
+                    {/* Quick Links & Services - Side by side on mobile */}
+                    <div className="md:col-span-2 lg:col-span-2 grid grid-cols-2 gap-8">
+                        {/* Quick Links */}
+                        <div>
+                            <h3 className="text-lg font-bold mb-6 uppercase tracking-wider">Quick Links</h3>
+                            <ul className="space-y-3 text-gray-400 text-sm">
+                                <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+                                <li><Link href="/projects" className="hover:text-white transition-colors">Our Services</Link></li>
+                                <li><Link href="/packages" className="hover:text-white transition-colors">Packages</Link></li>
+                                <li><Link href="/gallery" className="hover:text-white transition-colors">Gallery</Link></li>
+                                <li><ContactButton className="hover:text-white transition-colors cursor-pointer">Contact Us</ContactButton></li>
+                            </ul>
+
+                            {/* QR Code - Mobile only (below Quick Links) */}
+                            <div className="mt-8 md:hidden">
+                                <h3 className="text-lg font-bold mb-4 uppercase tracking-wider">QR Code</h3>
+                                <div className="bg-white p-2 w-fit rounded-lg">
+                                    <div className="w-28 h-28 bg-gray-200 flex items-center justify-center text-gray-500 text-xs text-center">
+                                        QR Code Placeholder
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Our Services */}
+                        <div>
+                            <h3 className="text-lg font-bold mb-6 uppercase tracking-wider">Our Services</h3>
+                            <ul className="space-y-2 text-gray-400 text-sm">
+                                {services.map((service, index) => (
+                                    <li key={index} className="hover:text-white transition-colors cursor-default">
+                                        {service}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
 
-                    {/* Column 4: Services */}
-                    <div className="lg:col-span-1">
-                        <h3 className="text-lg font-bold mb-6 uppercase tracking-wider">Our Services</h3>
-                        <ul className="space-y-2 text-gray-400 text-sm">
-                            {services.map((service, index) => (
-                                <li key={index} className="hover:text-white transition-colors cursor-default">
-                                    {service}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Column 5: QR Code */}
-                    <div className="lg:col-span-1">
+                    {/* QR Code - Desktop only */}
+                    <div className="hidden md:block lg:col-span-1">
                         <h3 className="text-lg font-bold mb-6 uppercase tracking-wider">QR Code</h3>
                         <div className="bg-white p-2 w-fit rounded-lg">
                             <div className="w-32 h-32 bg-gray-200 flex items-center justify-center text-gray-500 text-xs text-center">

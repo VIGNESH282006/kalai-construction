@@ -6,7 +6,7 @@ import { ConstructionCalculator } from '@/components/ui/construction-calculator'
 
 export default function PackagesPage() {
     return (
-        <main className="min-h-screen bg-white">
+        <main className="min-h-screen bg-white [&_p]:text-left [&_p]:text-justify-none">
             <Navbar />
 
             {/* Hero Section */}

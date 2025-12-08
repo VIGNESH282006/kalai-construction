@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Check,
@@ -13,16 +13,16 @@ import {
     Rocket,
     Home,
     Users,
-    Building2,
-    AlertCircle,
     Clock,
-    Award
+    Award,
+    Gem
 } from 'lucide-react';
+import { useContactPopup } from './contact-popup';
 
 interface PricingTier {
     name: string;
     subtitle: string;
-    price: { monthly: number; yearly: number };
+    price: number;
     description: string;
     icon: typeof Zap;
     gradient: string;
@@ -30,6 +30,7 @@ interface PricingTier {
     features: string[];
     highlight: boolean;
     badge: string | null;
+    isPremium?: boolean;
 }
 
 interface AdditionalFeature {
@@ -41,11 +42,10 @@ interface AdditionalFeature {
 interface PremiumPricingProps {
     customTiers?: PricingTier[];
     customFeatures?: AdditionalFeature[];
-    onPlanSelect?: (planName: string, isYearly: boolean) => void;
+    onPlanSelect?: (planName: string) => void;
     ctaText?: string;
     showAdditionalFeatures?: boolean;
     showCTASection?: boolean;
-    yearlyDiscountPercent?: number;
 }
 
 // Construction-related pricing plans
@@ -53,7 +53,7 @@ const pricingPlans: PricingTier[] = [
     {
         name: "Basic",
         subtitle: "For small projects",
-        price: { monthly: 15000, yearly: 150000 },
+        price: 15000,
         description: "Essential construction services for small residential projects",
         icon: Home,
         gradient: "from-blue-500/20 to-cyan-500/20",
@@ -72,7 +72,7 @@ const pricingPlans: PricingTier[] = [
     {
         name: "Standard",
         subtitle: "Most popular choice",
-        price: { monthly: 35000, yearly: 350000 },
+        price: 35000,
         description: "Complete construction package for residential buildings",
         icon: Crown,
         gradient: "from-indigo-500/20 to-purple-500/20",
@@ -93,11 +93,11 @@ const pricingPlans: PricingTier[] = [
     {
         name: "Premium",
         subtitle: "For large projects",
-        price: { monthly: 75000, yearly: 750000 },
+        price: 75000,
         description: "Enterprise-grade construction solutions with full customization",
-        icon: Rocket,
-        gradient: "from-amber-500/20 to-orange-500/20",
-        borderGradient: "from-amber-400 to-orange-400",
+        icon: Gem,
+        gradient: "from-amber-500/30 to-orange-500/30",
+        borderGradient: "from-amber-400 via-yellow-400 to-orange-400",
         features: [
             "Everything in Standard",
             "Custom Architecture Design",
@@ -109,7 +109,8 @@ const pricingPlans: PricingTier[] = [
             "Dedicated Project Manager"
         ],
         highlight: false,
-        badge: "Premium"
+        badge: "Premium",
+        isPremium: true
     }
 ];
 
@@ -143,25 +144,20 @@ export function PremiumPricing({
     ctaText = "Get Started",
     showAdditionalFeatures = true,
     showCTASection = true,
-    yearlyDiscountPercent = 17,
 }: PremiumPricingProps = {}) {
-    const [isYearly, setIsYearly] = useState(false);
     const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const { openPopup } = useContactPopup();
 
     const tiers = customTiers || pricingPlans;
     const features = customFeatures || additionalFeatures;
 
     const handlePlanSelect = (planName: string) => {
         try {
-            onPlanSelect?.(planName, isYearly);
+            onPlanSelect?.(planName);
         } catch (err) {
             console.error('Error in plan selection callback:', err);
         }
-    };
-
-    const calculateYearlySavings = (monthlyPrice: number, yearlyPrice: number) => {
-        return Math.max(0, (monthlyPrice * 12) - yearlyPrice);
     };
 
     const fadeInUp = {
@@ -279,183 +275,172 @@ export function PremiumPricing({
                     </motion.h2>
 
                     <motion.p
-                        className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-10"
+                        className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed text-center"
                         variants={fadeInUp}
                     >
                         From basic planning to premium construction, we offer comprehensive packages tailored to your budget and requirements.
                     </motion.p>
-
-                    {/* Billing Toggle */}
-                    <motion.div
-                        className="flex items-center justify-center gap-4"
-                        variants={fadeInUp}
-                    >
-                        <span className={`text-sm font-medium ${!isYearly ? 'text-gray-900' : 'text-gray-500'}`}>
-                            Per Sq.Ft
-                        </span>
-                        <motion.button
-                            onClick={() => setIsYearly(!isYearly)}
-                            className={`relative w-16 h-8 rounded-full border-2 transition-all ${isYearly ? 'bg-blue-600 border-blue-500' : 'bg-gray-200 border-gray-300'
-                                }`}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            aria-label={`Switch to ${isYearly ? 'per sq.ft' : 'full project'} pricing`}
-                        >
-                            <motion.div
-                                className="absolute top-0.5 w-6 h-6 bg-white rounded-full shadow-lg"
-                                animate={{
-                                    x: isYearly ? 32 : 2
-                                }}
-                                transition={{
-                                    type: "spring",
-                                    stiffness: 500,
-                                    damping: 30
-                                }}
-                            />
-                        </motion.button>
-                        <span className={`text-sm font-medium ${isYearly ? 'text-gray-900' : 'text-gray-500'}`}>
-                            Full Project
-                        </span>
-                        {isYearly && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="px-2 py-1 bg-green-100 border border-green-300 rounded-full text-xs text-green-700 font-medium"
-                            >
-                                Save {yearlyDiscountPercent}%
-                            </motion.div>
-                        )}
-                    </motion.div>
                 </motion.div>
 
                 {/* Pricing Cards */}
                 <motion.div
-                    className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
+                    className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20 pt-6"
                     variants={staggerContainer}
                 >
-                    {tiers.map((plan, index) => (
-                        <motion.div
-                            key={plan.name}
-                            className="relative"
-                            variants={fadeInUp}
-                            onHoverStart={() => setHoveredPlan(index)}
-                            onHoverEnd={() => setHoveredPlan(null)}
-                        >
+                    {tiers.map((plan, index) => {
+                        const isPremiumPlan = (plan as PricingTier).isPremium;
+
+                        return (
                             <motion.div
-                                className={`relative h-full p-8 rounded-3xl border backdrop-blur-xl overflow-hidden ${plan.highlight
-                                    ? 'bg-white border-blue-300 shadow-xl shadow-blue-100'
-                                    : 'bg-white border-gray-200 shadow-lg'
-                                    }`}
-                                variants={cardHover}
-                                initial="rest"
-                                whileHover="hover"
+                                key={plan.name}
+                                className="relative"
+                                variants={fadeInUp}
+                                onHoverStart={() => setHoveredPlan(index)}
+                                onHoverEnd={() => setHoveredPlan(null)}
                             >
-                                {/* Badge */}
+                                {/* Half-hidden badge above card */}
                                 {plan.badge && (
                                     <motion.div
-                                        className={`absolute -top-3 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${plan.borderGradient} text-white`}
-                                        initial={{ y: -20, opacity: 0 }}
+                                        className={`absolute -top-3 left-1/2 transform -translate-x-1/2 z-20 px-4 py-1.5 rounded-full text-xs font-semibold shadow-lg ${isPremiumPlan
+                                            ? 'bg-gradient-to-r from-amber-500 via-yellow-400 to-orange-500 text-white shadow-amber-200'
+                                            : 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-purple-200'
+                                            }`}
+                                        initial={{ y: -10, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
-                                        transition={{ delay: 0.2 }}
+                                        transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
                                     >
-                                        {plan.badge}
+                                        <span className="flex items-center gap-1.5">
+                                            {isPremiumPlan && <Sparkles className="w-3 h-3" />}
+                                            {plan.badge}
+                                            {isPremiumPlan && <Sparkles className="w-3 h-3" />}
+                                        </span>
                                     </motion.div>
                                 )}
 
-                                {/* Gradient overlay */}
-                                <div className={`absolute inset-0 bg-gradient-to-br ${plan.gradient} rounded-3xl opacity-40`} />
-
-                                <div className="relative z-10">
-                                    {/* Icon */}
-                                    <motion.div
-                                        className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${plan.gradient} border border-gray-200 flex items-center justify-center mb-6`}
-                                        whileHover={{ scale: 1.1, rotate: 5 }}
-                                        transition={{ duration: 0.3 }}
-                                    >
-                                        <plan.icon className="w-8 h-8 text-gray-700" />
-                                    </motion.div>
-
-                                    {/* Plan Info */}
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-                                    <p className="text-gray-600 text-sm mb-2">{plan.subtitle}</p>
-                                    <p className="text-gray-500 text-sm mb-6">{plan.description}</p>
-
-                                    {/* Price */}
-                                    <div className="mb-8">
-                                        <div className="flex items-baseline gap-2">
-                                            <span className="text-4xl font-bold text-gray-900">
-                                                ₹{isYearly ? plan.price.yearly.toLocaleString() : plan.price.monthly.toLocaleString()}
-                                            </span>
-                                            <span className="text-gray-600">
-                                                /{isYearly ? 'project' : 'sq.ft'}
-                                            </span>
-                                        </div>
-                                        {isYearly && (
-                                            <motion.p
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                className="text-green-600 text-sm mt-1"
-                                            >
-                                                Save ₹{calculateYearlySavings(plan.price.monthly, plan.price.yearly).toLocaleString()}
-                                            </motion.p>
-                                        )}
-                                    </div>
-
-                                    {/* Features */}
-                                    <div className="mb-8 space-y-3">
-                                        {plan.features.map((feature, featureIndex) => (
-                                            <motion.div
-                                                key={featureIndex}
-                                                className="flex items-center gap-3"
-                                                initial={{ opacity: 0, x: -20 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                transition={{ delay: featureIndex * 0.1 }}
-                                            >
-                                                <div className="w-5 h-5 rounded-full bg-green-100 border border-green-300 flex items-center justify-center flex-shrink-0">
-                                                    <Check className="w-3 h-3 text-green-600" />
-                                                </div>
-                                                <span className="text-gray-600 text-sm">{feature}</span>
-                                            </motion.div>
-                                        ))}
-                                    </div>
-
-                                    {/* CTA Button */}
-                                    <motion.button
-                                        onClick={() => handlePlanSelect(plan.name)}
-                                        className={`w-full py-4 px-6 rounded-xl font-medium transition-all ${plan.highlight
-                                            ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white'
-                                            : 'bg-gray-100 border border-gray-300 text-gray-900 hover:bg-gray-200'
-                                            }`}
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
-                                    >
-                                        <span className="flex items-center justify-center gap-2">
-                                            {ctaText}
-                                            <ArrowRight className="w-4 h-4" />
-                                        </span>
-                                    </motion.button>
-                                </div>
-
-                                {/* Hover glow effect */}
-                                <AnimatePresence>
-                                    {hoveredPlan === index && (
+                                <motion.div
+                                    className={`relative h-full p-8 rounded-3xl border backdrop-blur-xl overflow-visible ${isPremiumPlan
+                                        ? 'bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 border-amber-300 shadow-2xl shadow-amber-100'
+                                        : plan.highlight
+                                            ? 'bg-white border-blue-300 shadow-xl shadow-blue-100'
+                                            : 'bg-white border-gray-200 shadow-lg'
+                                        } ${plan.badge ? 'mt-2' : ''}`}
+                                    variants={cardHover}
+                                    initial="rest"
+                                    whileHover="hover"
+                                >
+                                    {/* Premium glow effect */}
+                                    {isPremiumPlan && (
                                         <motion.div
-                                            className="absolute inset-0 rounded-3xl pointer-events-none"
-                                            style={{
-                                                background: plan.highlight
-                                                    ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%)'
-                                                    : 'linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%)',
+                                            className="absolute -inset-1 bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 rounded-3xl opacity-20 blur-xl -z-10"
+                                            animate={{
+                                                opacity: [0.15, 0.25, 0.15],
                                             }}
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            exit={{ opacity: 0 }}
-                                            transition={{ duration: 0.3 }}
+                                            transition={{
+                                                duration: 3,
+                                                repeat: Infinity,
+                                                ease: "easeInOut"
+                                            }}
                                         />
                                     )}
-                                </AnimatePresence>
+
+                                    {/* Gradient overlay */}
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${plan.gradient} rounded-3xl ${isPremiumPlan ? 'opacity-60' : 'opacity-40'}`} />
+
+                                    <div className="relative z-10">
+                                        {/* Icon */}
+                                        <motion.div
+                                            className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${isPremiumPlan
+                                                ? 'bg-gradient-to-br from-amber-400 via-yellow-300 to-orange-400 border-2 border-amber-300 shadow-lg shadow-amber-200'
+                                                : `bg-gradient-to-br ${plan.gradient} border border-gray-200`
+                                                }`}
+                                            whileHover={{ scale: 1.1, rotate: 5 }}
+                                            transition={{ duration: 0.3 }}
+                                        >
+                                            <plan.icon className={`w-8 h-8 ${isPremiumPlan ? 'text-white' : 'text-gray-700'}`} />
+                                        </motion.div>
+
+                                        {/* Plan Info */}
+                                        <h3 className={`text-2xl font-bold mb-2 ${isPremiumPlan ? 'bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent' : 'text-gray-900'}`}>
+                                            {plan.name}
+                                        </h3>
+                                        <p className="text-gray-600 text-sm mb-2">{plan.subtitle}</p>
+                                        <p className="text-gray-500 text-sm mb-6">{plan.description}</p>
+
+                                        {/* Price */}
+                                        <div className="mb-8">
+                                            <div className="flex items-baseline gap-2">
+                                                <span className={`text-4xl font-bold ${isPremiumPlan ? 'bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent' : 'text-gray-900'}`}>
+                                                    ₹{plan.price.toLocaleString()}
+                                                </span>
+                                                <span className="text-gray-600">
+                                                    /sq.ft
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* Features */}
+                                        <div className="mb-8 space-y-3">
+                                            {plan.features.map((feature, featureIndex) => (
+                                                <motion.div
+                                                    key={featureIndex}
+                                                    className="flex items-center gap-3"
+                                                    initial={{ opacity: 0, x: -20 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ delay: featureIndex * 0.1 }}
+                                                >
+                                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${isPremiumPlan
+                                                        ? 'bg-amber-100 border border-amber-300'
+                                                        : 'bg-green-100 border border-green-300'
+                                                        }`}>
+                                                        <Check className={`w-3 h-3 ${isPremiumPlan ? 'text-amber-600' : 'text-green-600'}`} />
+                                                    </div>
+                                                    <span className="text-gray-600 text-sm">{feature}</span>
+                                                </motion.div>
+                                            ))}
+                                        </div>
+
+                                        {/* CTA Button */}
+                                        <motion.button
+                                            onClick={() => handlePlanSelect(plan.name)}
+                                            className={`w-full py-4 px-6 rounded-xl font-medium transition-all ${isPremiumPlan
+                                                ? 'bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 hover:from-amber-600 hover:via-yellow-600 hover:to-orange-600 text-white shadow-lg shadow-amber-200'
+                                                : plan.highlight
+                                                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white'
+                                                    : 'bg-gray-100 border border-gray-300 text-gray-900 hover:bg-gray-200'
+                                                }`}
+                                            whileHover={{ scale: 1.02 }}
+                                            whileTap={{ scale: 0.98 }}
+                                        >
+                                            <span className="flex items-center justify-center gap-2">
+                                                {ctaText}
+                                                <ArrowRight className="w-4 h-4" />
+                                            </span>
+                                        </motion.button>
+                                    </div>
+
+                                    {/* Hover glow effect */}
+                                    <AnimatePresence>
+                                        {hoveredPlan === index && (
+                                            <motion.div
+                                                className="absolute inset-0 rounded-3xl pointer-events-none"
+                                                style={{
+                                                    background: isPremiumPlan
+                                                        ? 'linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.15) 100%)'
+                                                        : plan.highlight
+                                                            ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%)'
+                                                            : 'linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%)',
+                                                }}
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{ duration: 0.3 }}
+                                            />
+                                        )}
+                                    </AnimatePresence>
+                                </motion.div>
                             </motion.div>
-                        </motion.div>
-                    ))}
+                        );
+                    })}
                 </motion.div>
 
                 {/* Additional Features */}
@@ -505,16 +490,16 @@ export function PremiumPricing({
                                     Contact us today for a free consultation. Let us help you bring your vision to life with quality construction.
                                 </p>
 
-                                <motion.a
-                                    href="/about#contact"
-                                    className="inline-flex items-center gap-3 bg-white text-blue-700 font-medium py-4 px-8 rounded-xl hover:bg-blue-50 transition-all"
+                                <motion.button
+                                    onClick={openPopup}
+                                    className="inline-flex items-center gap-3 bg-white text-blue-700 font-medium py-4 px-8 rounded-xl hover:bg-blue-50 transition-all cursor-pointer"
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                 >
                                     <Star className="h-5 w-5" />
                                     Get Free Consultation
                                     <ArrowRight className="h-5 w-5" />
-                                </motion.a>
+                                </motion.button>
                             </div>
                         </div>
                     </motion.div>

@@ -1,14 +1,41 @@
 "use client";
 
 import { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { Calculator, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import emailjs from '@emailjs/browser';
+import {
+    Calculator,
+    ChevronDown,
+    Sparkles,
+    Home,
+    Crown,
+    Gem,
+    Building,
+    Droplets,
+    Fence,
+    ArrowRight,
+    Check,
+    User,
+    Phone,
+    Mail,
+    MapPin,
+    Ruler,
+    Loader2
+} from 'lucide-react';
+
+// EmailJS Configuration
+const EMAILJS_PUBLIC_KEY = 'AmWgMD6ARfk-PSYDf';
+const EMAILJS_SERVICE_ID = 'service_l63y4vf';
+const EMAILJS_TEMPLATE_ID = 'template_53wpur8';
 
 interface CostItem {
+    id: string;
     work: string;
     area: number;
     unit: string;
     rate: number;
+    icon: typeof Home;
+    category: 'floor' | 'utility' | 'compound';
 }
 
 interface FormData {
@@ -21,17 +48,55 @@ interface FormData {
     package: string;
 }
 
-const packages = [
-    { name: "Basic Package @ ₹1500/sqft", rate: 1500 },
-    { name: "Standard Package @ ₹2099/sqft", rate: 2099 },
-    { name: "Premium Package @ ₹2500/sqft", rate: 2500 },
+interface Package {
+    id: string;
+    name: string;
+    displayName: string;
+    rate: number;
+    color: string;
+    gradient: string;
+    icon: typeof Home;
+    description: string;
+}
+
+const packages: Package[] = [
+    {
+        id: 'basic',
+        name: "Basic Package",
+        displayName: "Basic",
+        rate: 15000,
+        color: "blue",
+        gradient: "from-blue-500 to-cyan-500",
+        icon: Home,
+        description: "Essential construction"
+    },
+    {
+        id: 'standard',
+        name: "Standard Package",
+        displayName: "Standard",
+        rate: 35000,
+        color: "purple",
+        gradient: "from-indigo-500 to-purple-500",
+        icon: Crown,
+        description: "Most popular choice"
+    },
+    {
+        id: 'premium',
+        name: "Premium Package",
+        displayName: "Premium",
+        rate: 75000,
+        color: "amber",
+        gradient: "from-amber-500 to-orange-500",
+        icon: Gem,
+        description: "Luxury construction"
+    },
 ];
 
 const floorOptions = [
-    "Ground",
-    "Ground + 1",
-    "Ground + 2",
-    "Ground + 3",
+    { value: "Ground", label: "Ground Only", floors: 1 },
+    { value: "Ground + 1", label: "Ground + 1", floors: 2 },
+    { value: "Ground + 2", label: "Ground + 2", floors: 3 },
+    { value: "Ground + 3", label: "Ground + 3", floors: 4 },
 ];
 
 export function ConstructionCalculator() {
@@ -42,20 +107,31 @@ export function ConstructionCalculator() {
         location: '',
         totalLandArea: '',
         floors: 'Ground + 2',
-        package: packages[1].name,
+        package: 'standard',
     });
 
     const [costItems, setCostItems] = useState<CostItem[]>([
-        { work: "Area for Ground Floor", area: 0, unit: "sqft", rate: 2099 },
-        { work: "Area for First Floor", area: 0, unit: "sqft", rate: 2099 },
-        { work: "Area for Second Floor", area: 0, unit: "sqft", rate: 2099 },
-        { work: "Size of RCC Water Sump (3000 litre)", area: 0, unit: "litre", rate: 35 },
-        { work: "Size of Septic Tank (10000 litre)", area: 0, unit: "litre", rate: 20 },
-        { work: "Compound Wall (Height 5ft)", area: 0, unit: "RFT", rate: 1850 },
+        { id: 'ground', work: "Ground Floor Area", area: 0, unit: "sqft", rate: 35000, icon: Building, category: 'floor' },
+        { id: 'first', work: "First Floor Area", area: 0, unit: "sqft", rate: 35000, icon: Building, category: 'floor' },
+        { id: 'second', work: "Second Floor Area", area: 0, unit: "sqft", rate: 35000, icon: Building, category: 'floor' },
+        { id: 'third', work: "Third Floor Area", area: 0, unit: "sqft", rate: 35000, icon: Building, category: 'floor' },
+        { id: 'sump', work: "RCC Water Sump", area: 0, unit: "litre", rate: 35, icon: Droplets, category: 'utility' },
+        { id: 'septic', work: "Septic Tank", area: 0, unit: "litre", rate: 20, icon: Droplets, category: 'utility' },
+        { id: 'compound', work: "Compound Wall (5ft)", area: 0, unit: "RFT", rate: 1850, icon: Fence, category: 'compound' },
     ]);
 
-    // Update rates when package changes
-    const selectedPackage = packages.find(p => p.name === formData.package) || packages[1];
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Get number of floors to display based on selection
+    const getVisibleFloorCount = () => {
+        const selected = floorOptions.find(opt => opt.value === formData.floors);
+        return selected ? selected.floors : 3;
+    };
+
+    // Floor IDs in order
+    const floorIds = ['ground', 'first', 'second', 'third'];
+
+    const selectedPackage = packages.find(p => p.id === formData.package) || packages[1];
 
     const updatedCostItems = useMemo(() => {
         return costItems.map(item => {
@@ -70,13 +146,11 @@ export function ConstructionCalculator() {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleAreaChange = (index: number, value: string) => {
+    const handleAreaChange = (id: string, value: string) => {
         const numValue = parseFloat(value) || 0;
-        setCostItems(prev => {
-            const updated = [...prev];
-            updated[index] = { ...updated[index], area: numValue };
-            return updated;
-        });
+        setCostItems(prev => prev.map(item =>
+            item.id === id ? { ...item, area: numValue } : item
+        ));
     };
 
     const calculateCost = (item: CostItem) => {
@@ -84,241 +158,487 @@ export function ConstructionCalculator() {
         return item.area * rate;
     };
 
-    const totalCost = useMemo(() => {
-        return updatedCostItems.reduce((sum, item) => sum + calculateCost(item), 0);
-    }, [updatedCostItems, selectedPackage.rate]);
+    // Get visible floor items only
+    const getVisibleFloorItems = () => {
+        const visibleCount = getVisibleFloorCount();
+        return updatedCostItems
+            .filter(item => item.category === 'floor')
+            .filter(item => floorIds.indexOf(item.id) < visibleCount);
+    };
 
-    const handleSubmit = () => {
-        // Form validation
+    const totalCost = useMemo(() => {
+        const visibleFloorCost = getVisibleFloorItems().reduce((sum, item) => sum + calculateCost(item), 0);
+        const otherCost = updatedCostItems
+            .filter(item => item.category !== 'floor')
+            .reduce((sum, item) => sum + calculateCost(item), 0);
+        return visibleFloorCost + otherCost;
+    }, [updatedCostItems, selectedPackage.rate, formData.floors]);
+
+    const floorCost = useMemo(() => {
+        return getVisibleFloorItems().reduce((sum, item) => sum + calculateCost(item), 0);
+    }, [updatedCostItems, selectedPackage.rate, formData.floors]);
+
+    const utilityCost = useMemo(() => {
+        return updatedCostItems.filter(item => item.category === 'utility').reduce((sum, item) => sum + calculateCost(item), 0);
+    }, [updatedCostItems]);
+
+    const compoundCost = useMemo(() => {
+        return updatedCostItems.filter(item => item.category === 'compound').reduce((sum, item) => sum + calculateCost(item), 0);
+    }, [updatedCostItems]);
+
+    const handleSubmit = async () => {
         if (!formData.name || !formData.phone || !formData.email || !formData.location) {
             alert("Please fill all required fields");
             return;
         }
 
-        // Create estimate message
-        const message = `
-New Construction Estimate Request:
----------------------------------
-Name: ${formData.name}
-Phone: ${formData.phone}
-Email: ${formData.email}
-Location: ${formData.location}
-Total Land Area: ${formData.totalLandArea}
-Number of Floors: ${formData.floors}
-Package: ${formData.package}
+        setIsLoading(true);
 
-Cost Breakdown:
-${updatedCostItems.map(item => `${item.work}: ${item.area} ${item.unit} x ₹${item.unit === "sqft" ? selectedPackage.rate : item.rate} = ₹${calculateCost(item).toLocaleString()}`).join('\n')}
+        // Build cost breakdown text
+        const costBreakdown = updatedCostItems
+            .filter(item => item.area > 0)
+            .map(item => `• ${item.work}: ${item.area} ${item.unit} × ₹${item.unit === "sqft" ? selectedPackage.rate : item.rate} = ₹${calculateCost(item).toLocaleString()}`)
+            .join('\n');
 
-TOTAL ESTIMATED COST: ₹${totalCost.toLocaleString()}
-        `.trim();
+        // EmailJS template parameters
+        const templateParams = {
+            from_name: formData.name,
+            from_email: formData.email,
+            phone: formData.phone,
+            location: formData.location,
+            land_area: formData.totalLandArea || 'Not specified',
+            floors: formData.floors,
+            package: selectedPackage.displayName,
+            package_lower: selectedPackage.id,
+            package_rate: selectedPackage.rate.toLocaleString(),
+            cost_breakdown: costBreakdown || 'No items added',
+            floor_total: `₹${floorCost.toLocaleString()}`,
+            utility_total: `₹${utilityCost.toLocaleString()}`,
+            compound_total: `₹${compoundCost.toLocaleString()}`,
+            grand_total: `₹${totalCost.toLocaleString()}`,
+            date: new Date().toLocaleDateString('en-IN', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            })
+        };
 
-        // Open WhatsApp with the estimate
-        const whatsappUrl = `https://wa.me/917448556198?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
+        try {
+            await emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                templateParams,
+                EMAILJS_PUBLIC_KEY
+            );
+            alert("✅ Estimate request sent successfully! We'll contact you soon.");
+
+            // Reset form
+            setFormData({
+                name: '',
+                phone: '',
+                email: '',
+                location: '',
+                totalLandArea: '',
+                floors: 'Ground + 2',
+                package: 'standard',
+            });
+            setCostItems(prev => prev.map(item => ({ ...item, area: 0 })));
+        } catch (error) {
+            console.error('EmailJS Error:', error);
+            alert("❌ Failed to send request. Please try again or contact us directly.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const fadeInUp = {
+        hidden: { opacity: 0, y: 30 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    };
+
+    const staggerContainer = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
     };
 
     return (
-        <section className="py-16 md:py-20 bg-blue-50">
-            <div className="max-w-5xl mx-auto px-6">
+        <section className="relative py-16 md:py-24 bg-gradient-to-b from-gray-50 via-blue-50/30 to-white overflow-hidden">
+            {/* Background Effects */}
+            <div className="absolute inset-0">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                    className="text-center mb-10"
-                >
-                    <div className="inline-flex items-center gap-2 mb-4">
-                        <Calculator className="w-8 h-8 text-blue-600" />
-                    </div>
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-                        Home Construction Cost Calculator (2025) Chennai
+                    className="absolute top-1/4 -left-20 w-80 h-80 bg-blue-200/30 rounded-full blur-3xl"
+                    animate={{ x: [0, 30, 0], y: [0, 20, 0], scale: [1, 1.1, 1] }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div
+                    className="absolute bottom-1/4 -right-20 w-64 h-64 bg-purple-200/30 rounded-full blur-3xl"
+                    animate={{ x: [0, -20, 0], y: [0, -15, 0], scale: [1, 1.1, 1] }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+                />
+            </div>
+
+            <motion.div
+                className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6"
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+            >
+                {/* Header */}
+                <motion.div className="text-center mb-12" variants={fadeInUp}>
+                    <motion.div
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 border border-blue-200 mb-6"
+                        whileHover={{ scale: 1.05 }}
+                    >
+                        <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                        >
+                            <Calculator className="h-4 w-4 text-blue-600" />
+                        </motion.div>
+                        <span className="text-sm font-medium text-blue-700">Cost Estimator</span>
+                        <Sparkles className="h-4 w-4 text-amber-500" />
+                    </motion.div>
+
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+                        <span className="text-gray-900">Construction</span>{" "}
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-amber-600">
+                            Cost Calculator
+                        </span>
                     </h2>
-                    <p className="text-amber-600 font-medium">
-                        Estimate your construction cost here
+                    <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                        Get an instant estimate for your dream home construction in Chennai
                     </p>
                 </motion.div>
 
+                {/* Main Content */}
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    className="bg-white rounded-2xl shadow-lg p-6 md:p-8"
+                    className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+                    variants={staggerContainer}
                 >
-                    {/* Form Fields */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        {/* Name */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Name <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Enter name"
-                                value={formData.name}
-                                onChange={(e) => handleFormChange('name', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                            />
-                        </div>
+                    {/* Left Column - Contact Form */}
+                    <motion.div
+                        className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 md:p-8"
+                        variants={fadeInUp}
+                    >
+                        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                                <User className="w-4 h-4 text-blue-600" />
+                            </div>
+                            Your Details
+                        </h3>
 
-                        {/* Phone */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Phone Number <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="tel"
-                                placeholder="Enter phone number"
-                                value={formData.phone}
-                                onChange={(e) => handleFormChange('phone', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                            />
-                        </div>
+                        <div className="space-y-4">
+                            {/* Name & Phone Row */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="relative">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Name *</label>
+                                    <div className="relative">
+                                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        <input
+                                            type="text"
+                                            placeholder="Your name"
+                                            value={formData.name}
+                                            onChange={(e) => handleFormChange('name', e.target.value)}
+                                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="relative">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone *</label>
+                                    <div className="relative">
+                                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        <input
+                                            type="tel"
+                                            placeholder="Phone number"
+                                            value={formData.phone}
+                                            onChange={(e) => handleFormChange('phone', e.target.value)}
+                                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
 
-                        {/* Email */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Email <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="email"
-                                placeholder="Enter email address"
-                                value={formData.email}
-                                onChange={(e) => handleFormChange('email', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                            />
-                        </div>
+                            {/* Email & Location Row */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="relative">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                                    <div className="relative">
+                                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        <input
+                                            type="email"
+                                            placeholder="Email address"
+                                            value={formData.email}
+                                            onChange={(e) => handleFormChange('email', e.target.value)}
+                                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="relative">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Location *</label>
+                                    <div className="relative">
+                                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        <input
+                                            type="text"
+                                            placeholder="Your location"
+                                            value={formData.location}
+                                            onChange={(e) => handleFormChange('location', e.target.value)}
+                                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
 
-                        {/* Location */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Location <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Enter location"
-                                value={formData.location}
-                                onChange={(e) => handleFormChange('location', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                            />
-                        </div>
-
-                        {/* Total Land Area */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Total Land Area <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Enter total area"
-                                value={formData.totalLandArea}
-                                onChange={(e) => handleFormChange('totalLandArea', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                            />
-                        </div>
-
-                        {/* Number of Floors */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                No. of Floors <span className="text-red-500">*</span>
-                            </label>
-                            <div className="relative">
-                                <select
-                                    value={formData.floors}
-                                    onChange={(e) => handleFormChange('floors', e.target.value)}
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all appearance-none bg-white"
-                                >
-                                    {floorOptions.map((option) => (
-                                        <option key={option} value={option}>{option}</option>
-                                    ))}
-                                </select>
-                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 pointer-events-none" />
+                            {/* Land Area & Floors */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="relative">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Total Land Area</label>
+                                    <div className="relative">
+                                        <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        <input
+                                            type="text"
+                                            placeholder="Area in sqft"
+                                            value={formData.totalLandArea}
+                                            onChange={(e) => handleFormChange('totalLandArea', e.target.value)}
+                                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="relative">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">No. of Floors</label>
+                                    <div className="relative">
+                                        <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        <select
+                                            value={formData.floors}
+                                            onChange={(e) => handleFormChange('floors', e.target.value)}
+                                            className="w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white appearance-none"
+                                        >
+                                            {floorOptions.map((option) => (
+                                                <option key={option.value} value={option.value}>{option.label}</option>
+                                            ))}
+                                        </select>
+                                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Package Selection */}
-                    <div className="mb-8">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Package <span className="text-red-500">*</span>
-                        </label>
-                        <div className="relative max-w-md">
-                            <select
-                                value={formData.package}
-                                onChange={(e) => handleFormChange('package', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all appearance-none bg-white"
-                            >
+                        {/* Package Selection */}
+                        <div className="mt-8">
+                            <h4 className="text-sm font-medium text-gray-700 mb-4">Select Package</h4>
+                            <div className="grid grid-cols-3 gap-3">
                                 {packages.map((pkg) => (
-                                    <option key={pkg.name} value={pkg.name}>{pkg.name}</option>
-                                ))}
-                            </select>
-                            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 pointer-events-none" />
-                        </div>
-                    </div>
-
-                    {/* Cost Calculation Table */}
-                    <div className="overflow-x-auto rounded-xl border border-gray-200">
-                        <table className="w-full">
-                            <thead>
-                                <tr className="bg-blue-600 text-white">
-                                    <th className="py-4 px-4 text-left font-semibold">Work</th>
-                                    <th className="py-4 px-4 text-center font-semibold">Area</th>
-                                    <th className="py-4 px-4 text-center font-semibold">Unit</th>
-                                    <th className="py-4 px-4 text-center font-semibold">Rate</th>
-                                    <th className="py-4 px-4 text-center font-semibold">Cost</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {updatedCostItems.map((item, index) => (
-                                    <tr
-                                        key={index}
-                                        className={`border-b border-gray-200 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}
+                                    <motion.button
+                                        key={pkg.id}
+                                        onClick={() => handleFormChange('package', pkg.id)}
+                                        className={`relative p-4 rounded-xl border-2 transition-all ${formData.package === pkg.id
+                                            ? `border-${pkg.color}-500 bg-gradient-to-br ${pkg.gradient} text-white shadow-lg`
+                                            : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
+                                            }`}
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
                                     >
-                                        <td className="py-4 px-4 text-gray-700 font-medium">{item.work}</td>
-                                        <td className="py-4 px-4">
+                                        <pkg.icon className={`w-6 h-6 mx-auto mb-2 ${formData.package === pkg.id ? 'text-white' : 'text-gray-600'}`} />
+                                        <div className={`text-xs font-semibold ${formData.package === pkg.id ? 'text-white' : 'text-gray-900'}`}>
+                                            {pkg.displayName}
+                                        </div>
+                                        <div className={`text-xs mt-1 ${formData.package === pkg.id ? 'text-white/80' : 'text-gray-500'}`}>
+                                            ₹{pkg.rate.toLocaleString()}/sqft
+                                        </div>
+                                        {formData.package === pkg.id && (
+                                            <motion.div
+                                                className="absolute -top-2 -right-2 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-md"
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                            >
+                                                <Check className="w-3 h-3 text-green-600" />
+                                            </motion.div>
+                                        )}
+                                    </motion.button>
+                                ))}
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* Right Column - Cost Breakdown */}
+                    <motion.div
+                        className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 md:p-8"
+                        variants={fadeInUp}
+                    >
+                        <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                                <Calculator className="w-4 h-4 text-purple-600" />
+                            </div>
+                            Cost Breakdown
+                        </h3>
+
+                        {/* Floor Areas */}
+                        <div className="mb-6">
+                            <div className="flex items-center gap-2 mb-3">
+                                <Building className="w-4 h-4 text-blue-600" />
+                                <span className="text-sm font-medium text-gray-700">Floor Areas</span>
+                            </div>
+                            <div className="space-y-3">
+                                {updatedCostItems
+                                    .filter(item => item.category === 'floor')
+                                    .filter(item => {
+                                        const floorIndex = floorIds.indexOf(item.id);
+                                        return floorIndex < getVisibleFloorCount();
+                                    })
+                                    .map((item) => (
+                                        <motion.div
+                                            key={item.id}
+                                            className="flex items-center gap-3 p-3 bg-blue-50/50 rounded-xl border border-blue-100"
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: 'auto' }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            <div className="flex-1">
+                                                <div className="text-sm font-medium text-gray-800">{item.work}</div>
+                                                <div className="text-xs text-gray-500">₹{selectedPackage.rate.toLocaleString()}/sqft</div>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <input
+                                                    type="number"
+                                                    placeholder="0"
+                                                    value={item.area || ''}
+                                                    onChange={(e) => handleAreaChange(item.id, e.target.value)}
+                                                    className="w-24 px-3 py-2 text-sm border border-gray-200 rounded-lg text-center focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                                />
+                                                <span className="text-xs text-gray-500 w-8">sqft</span>
+                                            </div>
+                                            <div className="w-28 text-right">
+                                                <span className="text-sm font-semibold text-blue-600">
+                                                    ₹{calculateCost(item).toLocaleString()}
+                                                </span>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                            </div>
+                        </div>
+
+                        {/* Utilities */}
+                        <div className="mb-6">
+                            <div className="flex items-center gap-2 mb-3">
+                                <Droplets className="w-4 h-4 text-cyan-600" />
+                                <span className="text-sm font-medium text-gray-700">Utilities</span>
+                            </div>
+                            <div className="space-y-3">
+                                {updatedCostItems.filter(item => item.category === 'utility').map((item) => (
+                                    <div key={item.id} className="flex items-center gap-3 p-3 bg-cyan-50/50 rounded-xl border border-cyan-100">
+                                        <div className="flex-1">
+                                            <div className="text-sm font-medium text-gray-800">{item.work}</div>
+                                            <div className="text-xs text-gray-500">₹{item.rate}/litre</div>
+                                        </div>
+                                        <div className="flex items-center gap-2">
                                             <input
                                                 type="number"
-                                                placeholder={item.unit === "sqft" ? "Area in sqft" : "Value"}
+                                                placeholder="0"
                                                 value={item.area || ''}
-                                                onChange={(e) => handleAreaChange(index, e.target.value)}
-                                                className="w-full max-w-[120px] mx-auto block px-3 py-2 border border-gray-300 rounded-lg text-center focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                                onChange={(e) => handleAreaChange(item.id, e.target.value)}
+                                                className="w-24 px-3 py-2 text-sm border border-gray-200 rounded-lg text-center focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none"
                                             />
-                                        </td>
-                                        <td className="py-4 px-4 text-center text-gray-600">{item.unit}</td>
-                                        <td className="py-4 px-4 text-center text-gray-600">
-                                            Rs.{item.unit === "sqft" ? selectedPackage.rate : item.rate}
-                                        </td>
-                                        <td className="py-4 px-4 text-center font-semibold text-red-500">
-                                            Rs.{calculateCost(item).toLocaleString()}
-                                        </td>
-                                    </tr>
+                                            <span className="text-xs text-gray-500 w-8">litre</span>
+                                        </div>
+                                        <div className="w-28 text-right">
+                                            <span className="text-sm font-semibold text-cyan-600">
+                                                ₹{calculateCost(item).toLocaleString()}
+                                            </span>
+                                        </div>
+                                    </div>
                                 ))}
-                            </tbody>
-                            <tfoot>
-                                <tr className="bg-gray-100">
-                                    <td colSpan={4} className="py-4 px-4 text-right font-bold text-gray-900">
-                                        Total Estimated Cost:
-                                    </td>
-                                    <td className="py-4 px-4 text-center font-bold text-green-600 text-xl">
-                                        ₹{totalCost.toLocaleString()}
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                            </div>
+                        </div>
 
-                    {/* Submit Button */}
-                    <motion.button
-                        onClick={handleSubmit}
-                        className="w-full mt-8 py-4 px-6 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                    >
-                        GET FREE ESTIMATE NOW
-                    </motion.button>
+                        {/* Compound */}
+                        <div className="mb-6">
+                            <div className="flex items-center gap-2 mb-3">
+                                <Fence className="w-4 h-4 text-amber-600" />
+                                <span className="text-sm font-medium text-gray-700">Compound</span>
+                            </div>
+                            <div className="space-y-3">
+                                {updatedCostItems.filter(item => item.category === 'compound').map((item) => (
+                                    <div key={item.id} className="flex items-center gap-3 p-3 bg-amber-50/50 rounded-xl border border-amber-100">
+                                        <div className="flex-1">
+                                            <div className="text-sm font-medium text-gray-800">{item.work}</div>
+                                            <div className="text-xs text-gray-500">₹{item.rate.toLocaleString()}/RFT</div>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                type="number"
+                                                placeholder="0"
+                                                value={item.area || ''}
+                                                onChange={(e) => handleAreaChange(item.id, e.target.value)}
+                                                className="w-24 px-3 py-2 text-sm border border-gray-200 rounded-lg text-center focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
+                                            />
+                                            <span className="text-xs text-gray-500 w-8">RFT</span>
+                                        </div>
+                                        <div className="w-28 text-right">
+                                            <span className="text-sm font-semibold text-amber-600">
+                                                ₹{calculateCost(item).toLocaleString()}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Cost Summary */}
+                        <div className="border-t border-gray-200 pt-6 mt-6">
+                            <div className="space-y-2 mb-4">
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-600">Floor Construction</span>
+                                    <span className="font-medium text-gray-900">₹{floorCost.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-600">Utilities</span>
+                                    <span className="font-medium text-gray-900">₹{utilityCost.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-600">Compound Wall</span>
+                                    <span className="font-medium text-gray-900">₹{compoundCost.toLocaleString()}</span>
+                                </div>
+                            </div>
+
+                            {/* Total */}
+                            <motion.div
+                                className="p-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 text-white"
+                                animate={{ scale: totalCost > 0 ? [1, 1.02, 1] : 1 }}
+                                transition={{ duration: 0.3 }}
+                                key={totalCost}
+                            >
+                                <div className="flex justify-between items-center">
+                                    <span className="font-medium">Total Estimated Cost</span>
+                                    <span className="text-2xl font-bold">₹{totalCost.toLocaleString()}</span>
+                                </div>
+                            </motion.div>
+                        </div>
+
+                        {/* CTA Button */}
+                        <motion.button
+                            onClick={handleSubmit}
+                            disabled={isLoading}
+                            className="w-full mt-6 py-4 px-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+                            whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                            whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                        >
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                    Sending...
+                                </>
+                            ) : (
+                                <>
+                                    Get Free Estimate
+                                    <ArrowRight className="w-5 h-5" />
+                                </>
+                            )}
+                        </motion.button>
+                    </motion.div>
                 </motion.div>
-            </div>
+            </motion.div>
         </section>
     );
 }

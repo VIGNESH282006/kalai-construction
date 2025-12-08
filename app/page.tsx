@@ -81,6 +81,7 @@ export default function Home() {
       <ScrollExpandMedia
         mediaType='video'
         mediaSrc='/kalai.mp4'
+        mobileMediaSrc='/kalai-construction-video.mp4'
         bgImageSrc='https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1920&auto=format&fit=crop'
         date='Since 2010'
         scrollToExpand='Scroll to Explore'

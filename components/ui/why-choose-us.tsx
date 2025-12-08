@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Users, Award, Clock, Wrench } from "lucide-react";
+import { useContactPopup } from "./contact-popup";
 
 interface WhyChooseFeature {
     icon: React.ReactNode;
@@ -14,15 +15,15 @@ interface WhyChooseUsProps {
     subtitle?: string;
     imageSrc?: string;
     ctaText?: string;
-    ctaHref?: string;
 }
 
 export function WhyChooseUs({
     subtitle = "From residential homes to commercial buildings, we deliver excellence with quality craftsmanship and reliable service.",
     imageSrc = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop",
     ctaText = "Get a FREE Quote",
-    ctaHref = "/about#contact",
 }: WhyChooseUsProps) {
+    const { openPopup } = useContactPopup();
+
     const features: WhyChooseFeature[] = [
         {
             icon: <Users className="w-6 h-6" />,
@@ -213,14 +214,15 @@ export function WhyChooseUs({
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.5 }}
                 >
-                    <a
-                        href={ctaHref}
-                        className="inline-flex items-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-xl shadow-lg hover:bg-blue-500 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+                    <button
+                        onClick={openPopup}
+                        className="inline-flex items-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-xl shadow-lg hover:bg-blue-500 hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
                     >
                         {ctaText}
-                    </a>
+                    </button>
                 </motion.div>
             </div>
         </section>
     );
 }
+
