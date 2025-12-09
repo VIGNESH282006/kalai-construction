@@ -165,7 +165,7 @@ const ScrollExpandMedia = ({
 
     // 16:9 aspect ratio - starts larger, expands moderately to reduce cropping
     const mediaWidth = 700 + scrollProgress * (isMobileState ? 250 : 900);
-    const mediaHeight = 394 + scrollProgress * (isMobileState ? 281 : 506);
+    const mediaHeight = (isMobileState ? 600 : 394) + scrollProgress * (isMobileState ? 450 : 506);
     const textTranslateX = scrollProgress * (isMobileState ? 180 : 150);
 
     const firstWord = title ? title.split(' ')[0] : '';
