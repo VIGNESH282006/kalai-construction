@@ -15,7 +15,7 @@ export default function PackagesPage() {
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                         Our Construction Packages
                     </h1>
-                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    <p className="text-xl text-gray-600 max-w-3xl mx-auto" style={{ textAlign: 'center' }}>
                         Transparent pricing for quality construction. Choose a package that fits your needs and budget.
                     </p>
                 </div>

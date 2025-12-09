@@ -263,7 +263,7 @@ export function ConstructionCalculator() {
     };
 
     return (
-        <section className="relative py-16 md:py-24 bg-gradient-to-b from-gray-50 via-blue-50/30 to-white overflow-hidden">
+        <section id="cost-calculator" className="relative py-16 md:py-24 bg-gradient-to-b from-gray-50 via-blue-50/30 to-white overflow-hidden">
             {/* Background Effects */}
             <div className="absolute inset-0">
                 <motion.div
@@ -303,11 +303,11 @@ export function ConstructionCalculator() {
 
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
                         <span className="text-gray-900">Construction</span>{" "}
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-amber-600">
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#001f3f] via-blue-500 to-cyan-400">
                             Cost Calculator
                         </span>
                     </h2>
-                    <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                    <p className="text-gray-600 text-lg max-w-2xl mx-auto text-center">
                         Get an instant estimate for your dream home construction in Chennai
                     </p>
                 </motion.div>
@@ -620,7 +620,7 @@ export function ConstructionCalculator() {
                         <motion.button
                             onClick={handleSubmit}
                             disabled={isLoading}
-                            className="w-full mt-6 py-4 px-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="w-full mt-6 py-4 px-6 bg-gradient-to-r from-[#001f3f] via-blue-500 to-cyan-400 hover:from-[#001a35] hover:via-blue-600 hover:to-cyan-500 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                             whileHover={{ scale: isLoading ? 1 : 1.02 }}
                             whileTap={{ scale: isLoading ? 1 : 0.98 }}
                         >

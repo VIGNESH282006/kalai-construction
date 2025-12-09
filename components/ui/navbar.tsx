@@ -75,9 +75,9 @@ export function Navbar() {
                                 <Link
                                     key={item.name}
                                     href={item.href}
-                                    className={`text-sm font-semibold transition-all duration-300 hover:scale-105 ${isActive
-                                            ? 'text-blue-600'
-                                            : textClasses
+                                    className={`text-base font-semibold transition-all duration-300 hover:scale-105 ${isActive
+                                        ? 'text-blue-600'
+                                        : textClasses
                                         }`}
                                 >
                                     {item.name}
@@ -135,9 +135,9 @@ export function Navbar() {
                                 <Link
                                     key={item.name}
                                     href={item.href}
-                                    className={`block py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 ${isActive
-                                            ? 'text-blue-600 bg-blue-50'
-                                            : mobileMenuClasses
+                                    className={`block py-2 px-3 rounded-lg text-base font-semibold transition-all duration-200 ${isActive
+                                        ? 'text-blue-600 bg-blue-50'
+                                        : mobileMenuClasses
                                         }`}
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >

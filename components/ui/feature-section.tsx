@@ -48,20 +48,17 @@ export function FeatureSteps({
     }
 
     return (
-        <section className={cn("py-16 md:py-20 bg-white", className)}>
+        <section className={cn("pt-6 pb-16 md:py-20 bg-white", className)}>
             <div className="max-w-7xl mx-auto w-full px-6">
-                <div className="text-center mb-12">
-                    <p className="text-sm font-medium tracking-wide text-blue-600 uppercase mb-3">
-                        What We Offer
-                    </p>
+                <div className="text-center mb-0 md:mb-12">
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">
                         {title}
                     </h2>
                 </div>
 
-                <div className="flex flex-col md:grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-12 items-start lg:items-center" style={{ gap: 0 }}>
                     {/* Feature List - Left Side */}
-                    <div className="order-2 md:order-1 space-y-6">
+                    <div className="space-y-4 lg:space-y-6 !mt-0 [&>*:first-child]:mt-0 order-2 lg:order-1">
                         {features.map((feature, index) => (
                             <motion.button
                                 key={index}
@@ -119,7 +116,7 @@ export function FeatureSteps({
                     </div>
 
                     {/* Image - Right Side */}
-                    <div className="order-1 md:order-2 relative h-[250px] md:h-[350px] lg:h-[450px] overflow-hidden rounded-2xl shadow-xl">
+                    <div className="relative w-full h-[200px] sm:h-[250px] lg:h-[450px] overflow-hidden rounded-2xl shadow-xl lg:ml-24 order-1 lg:order-2 mb-4 lg:mb-0">
                         <AnimatePresence mode="wait">
                             {features.map(
                                 (feature, index) =>

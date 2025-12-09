@@ -160,6 +160,13 @@ export function PremiumPricing({
         }
     };
 
+    const scrollToCalculator = () => {
+        const calculator = document.getElementById('cost-calculator');
+        if (calculator) {
+            calculator.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
     const fadeInUp = {
         hidden: { opacity: 0, y: 60 },
         visible: {
@@ -269,13 +276,14 @@ export function PremiumPricing({
                             Choose Your
                         </span>
                         <br />
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-amber-600">
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#001f3f] via-blue-500 to-cyan-400">
                             Construction Package
                         </span>
                     </motion.h2>
 
                     <motion.p
-                        className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed text-center"
+                        className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+                        style={{ textAlign: 'center' }}
                         variants={fadeInUp}
                     >
                         From basic planning to premium construction, we offer comprehensive packages tailored to your budget and requirements.
@@ -346,7 +354,7 @@ export function PremiumPricing({
                                     {/* Gradient overlay */}
                                     <div className={`absolute inset-0 bg-gradient-to-br ${plan.gradient} rounded-3xl ${isPremiumPlan ? 'opacity-60' : 'opacity-40'}`} />
 
-                                    <div className="relative z-10">
+                                    <div className="relative z-10 flex flex-col h-full">
                                         {/* Icon */}
                                         <motion.div
                                             className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${isPremiumPlan
@@ -378,8 +386,8 @@ export function PremiumPricing({
                                             </div>
                                         </div>
 
-                                        {/* Features */}
-                                        <div className="mb-8 space-y-3">
+                                        {/* Features - flex-grow to push button down */}
+                                        <div className="mb-8 space-y-3 flex-grow">
                                             {plan.features.map((feature, featureIndex) => (
                                                 <motion.div
                                                     key={featureIndex}
@@ -399,10 +407,10 @@ export function PremiumPricing({
                                             ))}
                                         </div>
 
-                                        {/* CTA Button */}
+                                        {/* CTA Button - mt-auto ensures it stays at bottom */}
                                         <motion.button
-                                            onClick={() => handlePlanSelect(plan.name)}
-                                            className={`w-full py-4 px-6 rounded-xl font-medium transition-all ${isPremiumPlan
+                                            onClick={scrollToCalculator}
+                                            className={`w-full py-4 px-6 rounded-xl font-medium transition-all mt-auto cursor-pointer ${isPremiumPlan
                                                 ? 'bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 hover:from-amber-600 hover:via-yellow-600 hover:to-orange-600 text-white shadow-lg shadow-amber-200'
                                                 : plan.highlight
                                                     ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white'
@@ -481,12 +489,12 @@ export function PremiumPricing({
                         className="text-center"
                         variants={fadeInUp}
                     >
-                        <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-8 md:p-12 overflow-hidden max-w-4xl mx-auto">
+                        <div className="relative bg-gradient-to-r from-[#001f3f] via-blue-600 to-cyan-600 rounded-3xl p-8 md:p-12 overflow-hidden max-w-4xl mx-auto">
                             <div className="relative z-10">
                                 <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white">
                                     Ready to Build Your Dream Home?
                                 </h3>
-                                <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+                                <p className="text-xl text-blue-100 mb-8 leading-relaxed" style={{ textAlign: 'center' }}>
                                     Contact us today for a free consultation. Let us help you bring your vision to life with quality construction.
                                 </p>
 
