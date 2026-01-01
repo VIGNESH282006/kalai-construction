@@ -19,7 +19,7 @@ interface WhyChooseUsProps {
 
 export function WhyChooseUs({
     subtitle = "From residential homes to commercial buildings, we deliver excellence with quality craftsmanship and reliable service.",
-    imageSrc = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop",
+    imageSrc = "/why-choose-us.png",
     ctaText = "Get a FREE Quote",
 }: WhyChooseUsProps) {
     const { openPopup } = useContactPopup();

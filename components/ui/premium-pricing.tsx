@@ -53,7 +53,7 @@ const pricingPlans: PricingTier[] = [
     {
         name: "Basic",
         subtitle: "For small projects",
-        price: 15000,
+        price: 2200,
         description: "Essential construction services for small residential projects",
         icon: Home,
         gradient: "from-blue-500/20 to-cyan-500/20",
@@ -72,7 +72,7 @@ const pricingPlans: PricingTier[] = [
     {
         name: "Standard",
         subtitle: "Most popular choice",
-        price: 35000,
+        price: 2400,
         description: "Complete construction package for residential buildings",
         icon: Crown,
         gradient: "from-indigo-500/20 to-purple-500/20",
@@ -93,7 +93,7 @@ const pricingPlans: PricingTier[] = [
     {
         name: "Premium",
         subtitle: "For large projects",
-        price: 75000,
+        price: 3000,
         description: "Enterprise-grade construction solutions with full customization",
         icon: Gem,
         gradient: "from-amber-500/30 to-orange-500/30",

@@ -64,7 +64,7 @@ const packages: Package[] = [
         id: 'basic',
         name: "Basic Package",
         displayName: "Basic",
-        rate: 15000,
+        rate: 2200,
         color: "blue",
         gradient: "from-blue-500 to-cyan-500",
         icon: Home,
@@ -74,7 +74,7 @@ const packages: Package[] = [
         id: 'standard',
         name: "Standard Package",
         displayName: "Standard",
-        rate: 35000,
+        rate: 2400,
         color: "purple",
         gradient: "from-indigo-500 to-purple-500",
         icon: Crown,
@@ -84,7 +84,7 @@ const packages: Package[] = [
         id: 'premium',
         name: "Premium Package",
         displayName: "Premium",
-        rate: 75000,
+        rate: 3000,
         color: "amber",
         gradient: "from-amber-500 to-orange-500",
         icon: Gem,
@@ -111,10 +111,10 @@ export function ConstructionCalculator() {
     });
 
     const [costItems, setCostItems] = useState<CostItem[]>([
-        { id: 'ground', work: "Ground Floor Area", area: 0, unit: "sqft", rate: 35000, icon: Building, category: 'floor' },
-        { id: 'first', work: "First Floor Area", area: 0, unit: "sqft", rate: 35000, icon: Building, category: 'floor' },
-        { id: 'second', work: "Second Floor Area", area: 0, unit: "sqft", rate: 35000, icon: Building, category: 'floor' },
-        { id: 'third', work: "Third Floor Area", area: 0, unit: "sqft", rate: 35000, icon: Building, category: 'floor' },
+        { id: 'ground', work: "Ground Floor Area", area: 0, unit: "sqft", rate: 2400, icon: Building, category: 'floor' },
+        { id: 'first', work: "First Floor Area", area: 0, unit: "sqft", rate: 2400, icon: Building, category: 'floor' },
+        { id: 'second', work: "Second Floor Area", area: 0, unit: "sqft", rate: 2400, icon: Building, category: 'floor' },
+        { id: 'third', work: "Third Floor Area", area: 0, unit: "sqft", rate: 2400, icon: Building, category: 'floor' },
         { id: 'sump', work: "RCC Water Sump", area: 0, unit: "litre", rate: 35, icon: Droplets, category: 'utility' },
         { id: 'septic', work: "Septic Tank", area: 0, unit: "litre", rate: 20, icon: Droplets, category: 'utility' },
         { id: 'compound', work: "Compound Wall (5ft)", area: 0, unit: "RFT", rate: 1850, icon: Fence, category: 'compound' },
@@ -319,7 +319,7 @@ export function ConstructionCalculator() {
                 >
                     {/* Left Column - Contact Form */}
                     <motion.div
-                        className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 md:p-8"
+                        className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 md:p-8 h-fit"
                         variants={fadeInUp}
                     >
                         <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
