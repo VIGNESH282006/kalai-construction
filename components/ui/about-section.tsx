@@ -8,7 +8,7 @@ interface AboutSectionProps {
 }
 
 export function AboutSection({
-    imageSrc = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop",
+    imageSrc = "/images/about-us-final.jpg",
 }: AboutSectionProps) {
     return (
         <section className="py-16 md:py-24 bg-gray-100 overflow-hidden">

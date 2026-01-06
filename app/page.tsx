@@ -23,28 +23,28 @@ export default function Home() {
       suffix: "+",
       label: "Years of Experience",
       description: "Over 15 years of excellence in building construction across Tamil Nadu.",
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop"
+      image: "/images/experience-bg-bright.png"
     },
     {
       value: 30,
       suffix: "+",
       label: "Our Team",
       description: "A dedicated team of skilled professionals committed to quality craftsmanship.",
-      image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop"
+      image: "/images/our-team-bg-bright.png"
     },
     {
       value: 100,
       suffix: "%",
       label: "Quality Products",
       description: "We use only premium-grade materials for lasting durability and finish.",
-      image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop"
+      image: "/images/quality-products-bg-bright.png"
     },
     {
       value: 100,
       suffix: "%",
       label: "Client Satisfaction",
       description: "Our clients' happiness is our top priority, delivering beyond expectations.",
-      image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=800&auto=format&fit=crop"
+      image: "/images/client-satisfaction-bg-bright.png"
     },
   ];
 
@@ -71,7 +71,7 @@ export default function Home() {
       step: "Feature 4",
       title: "Best Support",
       content: "Our dedicated team provides end-to-end support from planning to completion, ensuring smooth communication and addressing your needs at every stage.",
-      image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=1200&auto=format&fit=crop"
+      image: "/images/best-support.png"
     },
   ];
 

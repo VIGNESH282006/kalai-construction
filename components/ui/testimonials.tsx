@@ -6,7 +6,7 @@ export default function Testimonials() {
         <section className="py-16 md:py-32 bg-gray-50">
             <div className="mx-auto max-w-6xl space-y-8 px-6 md:space-y-16">
                 <div className="relative z-10 mx-auto max-w-xl space-y-6 text-center md:space-y-12">
-                    <h2 className="text-4xl font-bold lg:text-5xl text-gray-900">
+                    <h2 className="text-3xl md:text-4xl font-bold lg:text-5xl text-gray-900 whitespace-nowrap">
                         What Our Clients Say
                     </h2>
                     <p className="text-xl text-gray-700">

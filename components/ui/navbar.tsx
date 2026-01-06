@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { FlowButton } from './flow-button';
 import { useContactPopup } from './contact-popup';
 
@@ -49,9 +49,10 @@ export function Navbar() {
     // Always use dark text for mobile menu
     const mobileMenuClasses = 'text-gray-900 hover:bg-gray-100';
 
+    const router = useRouter();
     const handleContactClick = () => {
         setIsMobileMenuOpen(false);
-        openPopup();
+        router.push('/contact');
     };
 
     return (

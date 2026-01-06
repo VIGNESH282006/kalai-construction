@@ -282,8 +282,7 @@ export function PremiumPricing({
                     </motion.h2>
 
                     <motion.p
-                        className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
-                        style={{ textAlign: 'center' }}
+                        className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed !text-center"
                         variants={fadeInUp}
                     >
                         From basic planning to premium construction, we offer comprehensive packages tailored to your budget and requirements.

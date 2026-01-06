@@ -86,7 +86,7 @@ function StatCard({ stat, index }: { stat: CoreStat; index: number }) {
                         <p className="text-base font-semibold uppercase tracking-wide opacity-95 mt-2">
                             {stat.label}
                         </p>
-                        <p className="text-sm leading-relaxed opacity-85 mt-1">
+                        <p className="text-sm leading-relaxed opacity-85 mt-1 text-left">
                             {stat.description}
                         </p>
                     </div>
@@ -106,7 +106,7 @@ export default function CoreValueStats({
             {/* Section header */}
             <div className="space-y-4 mb-12">
                 <p className="text-sm font-medium tracking-wide text-blue-600 uppercase">
-                    
+
                 </p>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900">
                     {title}

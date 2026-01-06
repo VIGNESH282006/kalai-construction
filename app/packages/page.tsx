@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Navbar } from '@/components/ui/navbar';
 import { PremiumPricing } from '@/components/ui/premium-pricing';
 import { ConstructionCalculator } from '@/components/ui/construction-calculator';
+import { ScrollToTop } from '@/components/ui/scroll-to-top';
 
 export default function PackagesPage() {
     return (
@@ -55,6 +56,8 @@ export default function PackagesPage() {
             >
                 <ConstructionCalculator />
             </motion.div>
+
+            <ScrollToTop />
         </main>
     );
 }

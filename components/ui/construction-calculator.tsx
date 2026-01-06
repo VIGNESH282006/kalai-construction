@@ -307,7 +307,7 @@ export function ConstructionCalculator() {
                             Cost Calculator
                         </span>
                     </h2>
-                    <p className="text-gray-600 text-lg max-w-2xl mx-auto text-center">
+                    <p className="text-gray-600 text-lg max-w-2xl mx-auto !text-center">
                         Get an instant estimate for your dream home construction in Chennai
                     </p>
                 </motion.div>

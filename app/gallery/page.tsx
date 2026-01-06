@@ -62,8 +62,8 @@ export default function GalleryPage() {
             <SplitHero
                 title="Our Project Gallery"
                 description="Explore our portfolio of completed construction projects. From residential homes to commercial buildings, each project showcases our commitment to quality and excellence."
-                image1Src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop"
-                image2Src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop"
+                image1Src="/images/gallery-hero-1.png"
+                image2Src="/images/gallery-hero-2.png"
                 stats={[
                     { value: "500+", label: "Projects Completed" },
                     { value: "15+", label: "Years Experience" },
@@ -77,7 +77,7 @@ export default function GalleryPage() {
                     <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
                         Project Gallery
                     </h2>
-                    <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+                    <p className="text-xl text-gray-700 max-w-6xl mx-auto leading-relaxed">
                         Browse through our collection of completed projects. Click on any image to view it in detail.
                     </p>
                 </div>
