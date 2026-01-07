@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Navbar } from '@/components/ui/navbar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { SplitHero } from '@/components/ui/split-hero';
+import { FeatureSteps } from '@/components/ui/feature-section';
 import { MissionCoreValues } from '@/components/ui/mission-core-values';
 import { Building2, FileCheck, Landmark, Wallet, Home, Paintbrush, Ruler, UtensilsCrossed, Building, Wrench } from 'lucide-react';
 import { useContactPopup } from '@/components/ui/contact-popup';
@@ -94,6 +95,33 @@ export default function OurServicesPage() {
         },
     ];
 
+    const features = [
+        {
+            step: "Feature 1",
+            title: "Quality",
+            content: "We deliver exceptional quality in every project, using premium materials and skilled craftsmanship to ensure your construction stands the test of time.",
+            image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop"
+        },
+        {
+            step: "Feature 2",
+            title: "Trust",
+            content: "With over 15 years of experience, we've built lasting relationships with our clients through transparency, reliability, and consistent delivery on our promises.",
+            image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop"
+        },
+        {
+            step: "Feature 3",
+            title: "Innovation",
+            content: "We embrace modern construction techniques and innovative designs, bringing creative solutions that maximize space, efficiency, and aesthetic appeal.",
+            image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop"
+        },
+        {
+            step: "Feature 4",
+            title: "Best Support",
+            content: "Our dedicated team provides end-to-end support from planning to completion, ensuring smooth communication and addressing your needs at every stage.",
+            image: "/images/best-support.png"
+        },
+    ];
+
     const renderServiceCard = (service: typeof services[0], index: number) => {
         const Icon = service.icon;
         return (
@@ -168,6 +196,13 @@ export default function OurServicesPage() {
                     ))}
                 </div>
             </div>
+
+            {/* Features Section */}
+            <FeatureSteps
+                title="Our Features"
+                features={features}
+                autoPlayInterval={5000}
+            />
 
             {/* Mission & Core Values Section */}
             <MissionCoreValues />

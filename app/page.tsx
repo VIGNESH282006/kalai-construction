@@ -5,9 +5,10 @@ import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero';
 import { Navbar } from '@/components/ui/navbar';
 import { AboutSection } from '@/components/ui/about-section';
 import CoreValueStats, { CoreStat } from '@/components/ui/core-value-stats';
-import { FeatureSteps } from '@/components/ui/feature-section';
+
 import { WhyChooseUs } from '@/components/ui/why-choose-us';
 import Testimonials from '@/components/ui/testimonials';
+import { CircularTestimonials } from '@/components/ui/circular-testimonials';
 
 export default function Home() {
   useEffect(() => {
@@ -48,32 +49,7 @@ export default function Home() {
     },
   ];
 
-  const features = [
-    {
-      step: "Feature 1",
-      title: "Quality",
-      content: "We deliver exceptional quality in every project, using premium materials and skilled craftsmanship to ensure your construction stands the test of time.",
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop"
-    },
-    {
-      step: "Feature 2",
-      title: "Trust",
-      content: "With over 15 years of experience, we've built lasting relationships with our clients through transparency, reliability, and consistent delivery on our promises.",
-      image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop"
-    },
-    {
-      step: "Feature 3",
-      title: "Innovation",
-      content: "We embrace modern construction techniques and innovative designs, bringing creative solutions that maximize space, efficiency, and aesthetic appeal.",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200&auto=format&fit=crop"
-    },
-    {
-      step: "Feature 4",
-      title: "Best Support",
-      content: "Our dedicated team provides end-to-end support from planning to completion, ensuring smooth communication and addressing your needs at every stage.",
-      image: "/images/best-support.png"
-    },
-  ];
+
 
   return (
     <div className='min-h-screen bg-gray-50'>
@@ -99,12 +75,42 @@ export default function Home() {
         stats={stats}
       />
 
-      {/* Features Section */}
-      <FeatureSteps
-        title="Our Features"
-        features={features}
-        autoPlayInterval={5000}
-      />
+
+
+      {/* CRM App Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Manage Your Build From Anywhere</h2>
+          <p className="text-center text-gray-600 max-w-2xl mx-auto text-lg">
+            Experience the future of construction with our exclusive CRM App.
+            Stay connected to your project 24/7 with real-time updates and complete transparency.
+          </p>
+        </div>
+        <CircularTestimonials features={[
+          {
+            title: "Real-Time Project & Customer Updates",
+            description: "Get instant updates on project progress, customer interactions, and status changes—so you’re always working with the latest information, without delays.",
+            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop"
+          },
+          {
+            title: "Live Notifications & Alerts",
+            description: "Receive real-time alerts for new leads, task updates, approvals, and issues, ensuring nothing slips through the cracks.",
+            image: "/images/mobile-notification-v2.png"
+          },
+          {
+            title: "Instant Team Collaboration",
+            description: "Changes made by one team member are reflected immediately for everyone—keeping teams aligned, responsive, and in sync at all times.",
+            image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop"
+          },
+          {
+            title: "Live Dashboards & Performance Tracking",
+            description: "Monitor sales, projects, and customer activity through live dashboards that update automatically as data changes.",
+            image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop"
+          }
+        ]}
+          autoplayInterval={3000}
+        />
+      </section>
 
       {/* Why Choose Us Section */}
       <WhyChooseUs />
