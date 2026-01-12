@@ -77,7 +77,7 @@ export default function GalleryPage() {
                     <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
                         Project Gallery
                     </h2>
-                    <p className="text-xl text-gray-700 max-w-6xl mx-auto leading-relaxed">
+                    <p className="text-xl !text-center text-gray-700 max-w-6xl mx-auto leading-relaxed">
                         Browse through our collection of completed projects. Click on any image to view it in detail.
                     </p>
                 </div>
