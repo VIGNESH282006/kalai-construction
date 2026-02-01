@@ -7,6 +7,7 @@ import { AboutSection } from '@/components/ui/about-section';
 import CoreValueStats, { CoreStat } from '@/components/ui/core-value-stats';
 
 import { WhyChooseUs } from '@/components/ui/why-choose-us';
+import { ConstructionProcessTimeline } from '@/components/ui/construction-process-timeline';
 import Testimonials from '@/components/ui/testimonials';
 import { CircularTestimonials } from '@/components/ui/circular-testimonials';
 
@@ -114,6 +115,9 @@ export default function Home() {
 
       {/* Why Choose Us Section */}
       <WhyChooseUs />
+
+      {/* Construction Process Timeline Section */}
+      <ConstructionProcessTimeline />
 
       {/* Testimonials Section */}
       <Testimonials />

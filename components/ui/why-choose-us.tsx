@@ -48,7 +48,7 @@ export function WhyChooseUs({
     ];
 
     return (
-        <section className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+        <section className="py-16 md:py-24 bg-linear-to-b from-gray-50 to-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-6">
                 {/* Header */}
                 <motion.div
@@ -61,7 +61,7 @@ export function WhyChooseUs({
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
                         Why Choose <span className="text-blue-600">Us?</span>
                     </h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto md:!text-center">
+                    <p className="text-lg text-gray-600 max-w-2xl mx-auto md:text-center!">
                         {subtitle}
                     </p>
                 </motion.div>
@@ -117,7 +117,7 @@ export function WhyChooseUs({
                                         height={600}
                                         className="w-full h-[400px] object-cover"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                                    <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
                                 </div>
                             </div>
                         </motion.div>
@@ -172,7 +172,7 @@ export function WhyChooseUs({
                                         height={500}
                                         className="w-full h-[300px] object-cover"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                                    <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
                                 </div>
                             </div>
                         </motion.div>
