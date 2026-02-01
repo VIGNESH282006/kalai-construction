@@ -15,7 +15,8 @@ import {
     Users,
     Clock,
     Award,
-    Gem
+    Gem,
+    ChevronDown
 } from 'lucide-react';
 import { useContactPopup } from './contact-popup';
 
@@ -28,6 +29,7 @@ interface PricingTier {
     gradient: string;
     borderGradient: string;
     features: string[];
+    featureDetails?: Record<string, string[]>;
     highlight: boolean;
     badge: string | null;
     isPremium?: boolean;
@@ -59,15 +61,68 @@ const pricingPlans: PricingTier[] = [
         gradient: "from-blue-500/20 to-cyan-500/20",
         borderGradient: "from-blue-400 to-cyan-400",
         features: [
-            "Structure: Pulkit Steel & Zuari/Dalmia Cement",
-            "Walls: AAC Blocks (9\" Outer, 4.5\" Inner)",
-            "Flooring: Tiles/Granite (Upto ₹45/sqft)",
-            "Main Door: Teak Wood (Upto ₹25,000)",
-            "Windows: Jindal 3 Track (₹350/sqft)",
-            "Electrical: Polycab Wires & Legrand Switches",
-            "Plumbing: Hindware Sanitary (Upto ₹30k)",
-            "Painting: Tractor Emulsion (Interior)"
+            "Structure",
+            "Kitchen",
+            "Bathroom",
+            "Doors & Windows",
+            "Painting",
+            "Flooring",
+            "Wiring",
+            "Others"
         ],
+        featureDetails: {
+            Structure: [
+                "Steel: Fe 550/Fe 550D PULKIT",
+                "Cement: 43 grade in surface, 53 grade in core, Zuari / Dalmia",
+                "Aggregates: 20mm & 40mm",
+                "Block work: 9 inch (outer), 4.5 inch (inner) – First Class Red brick",
+                "RCC Mix: M20",
+                "Ceiling height Floor-to-Floor: 10 Feet",
+                "Basement height: 3 feet"
+            ],
+            Kitchen: [
+                "Ceramic Wall Dado: Upto ₹35 per sqft",
+                "Sink: Upto ₹3000 (Single bowl SS)",
+                "Sink Faucet: Upto ₹1000",
+                "Sink Accessories: ISI Marked"
+            ],
+            Bathroom: [
+                "Ceramic Wall Dado: Upto ₹30 per sqft",
+                "Sanitary & CP fittings: Upto ₹30,000 per 1000 sqft (Hindware)",
+                "Bathroom Accessories: Mirror, Soap dish, Towel rail - worth of ₹7,000 per 1000 sqft",
+                "Provision for Solar water heater: [NO]"
+            ],
+            "Doors & Windows": [
+                "Doors: PVC",
+                "Main Door: Teak door & Teak frame upto ₹25,000 including accessories",
+                "Internal Doors: Membrane / Flush door with laminates upto ₹5,000",
+                "Puja Room Door: [NO]",
+                "Windows: 3 Track with 1 Mesh UPVC ₹350 per sqft of Jindal Profiles",
+                "Window grills: Basic design MS Grill ₹180 per sqft"
+            ],
+            Painting: [
+                "Interior Painting: JKPutty + Primer + Tractor Emulsion Paint",
+                "Exterior Painting: Primer + Ace Exterior Emulsion"
+            ],
+            Flooring: [
+                "Living & Dining Flooring: Tiles upto ₹45 per sqft",
+                "Rooms and Kitchen Flooring: Tiles / Granite upto ₹45 per sqft",
+                "Balcony and Open Area: Anti Skid Tiles upto ₹35 per sqft",
+                "Parking: Anti Skid Tiles upto ₹40 per sqft"
+            ],
+            Wiring: [
+                "Fireproof Wiring: Finolex silver FR or equivalent",
+                "Switch / Socket: Legrand Allzy / Great white",
+                "Provision for UPS Wiring: [YES]",
+                "EV Charging point at Ground Floor: [NO]"
+            ],
+            Others: [
+                "Overhead tank: Double layered tank of Apollo / equivalent make, 1000 Ltrs. of Sunplast / equivalent make",
+                "Underground sump: [NO]",
+                "Staircase railing: MS Railing",
+                "Copper Gas Connection: [NO]"
+            ]
+        },
         highlight: false,
         badge: null
     },
@@ -80,15 +135,68 @@ const pricingPlans: PricingTier[] = [
         gradient: "from-indigo-500/20 to-purple-500/20",
         borderGradient: "from-indigo-400 to-purple-400",
         features: [
-            "Structure: ARS Steel & Coromandel Cement",
-            "Walls: First Class Red Brick Construction",
-            "Flooring: Tiles/Granite (Upto ₹60/sqft)",
-            "Main Door: Teak Wood (Upto ₹45,000)",
-            "Windows: 3 Track (₹550/sqft)",
-            "Electrical: Finolex Silver FR Wires",
-            "Plumbing: Hindware Sanitary (Upto ₹50k)",
-            "Painting: Tractor Shyne Emulsion"
+            "Structure",
+            "Kitchen",
+            "Bathroom",
+            "Doors & Windows",
+            "Painting",
+            "Flooring",
+            "Wiring",
+            "Others"
         ],
+        featureDetails: {
+            Structure: [
+                "Steel: Fe 550/Fe 550D ARS Steel",
+                "Cement: 43 grade in surface, 53 grade in core, Coromandel",
+                "Aggregates: 20mm & 40mm",
+                "Block work: 9 inch (outer), 4.5 inch (inner) – First Class Red brick",
+                "RCC Mix: M20",
+                "Ceiling height Floor-to-Floor: 10 Feet",
+                "Basement height: 3 feet"
+            ],
+            Kitchen: [
+                "Ceramic Wall Dado: Upto ₹45 per sqft",
+                "Sink: Upto ₹5000 (Single bowl SS)",
+                "Sink Faucet: Upto ₹2000",
+                "Sink Accessories: ISI Marked"
+            ],
+            Bathroom: [
+                "Ceramic Wall Dado: Upto ₹40 per sqft",
+                "Sanitary & CP fittings: Upto ₹50,000 per 1000 sqft (Hindware)",
+                "Bathroom Accessories: Mirror, Soap dish, Towel rail - worth of ₹10,000 per 1000 sqft",
+                "Provision for Solar water heater: [NO]"
+            ],
+            "Doors & Windows": [
+                "Doors: Flush doors with laminates",
+                "Main Door: Teak door & Teak frame upto ₹45,000 including accessories",
+                "Internal Doors: Membrane / Flush door with laminates upto ₹8,000",
+                "Puja Room Door: [NO]",
+                "Windows: 3 Track with 1 Mesh UPVC ₹550 per sqft",
+                "Window grills: Designer MS Grill ₹220 per sqft"
+            ],
+            Painting: [
+                "Interior Painting: JKPutty + Primer + Tractor Shyne Emulsion Paint",
+                "Exterior Painting: Primer + Apex Exterior Emulsion"
+            ],
+            Flooring: [
+                "Living & Dining Flooring: Tiles upto ₹60 per sqft",
+                "Rooms and Kitchen Flooring: Tiles / Granite upto ₹60 per sqft",
+                "Balcony and Open Area: Anti Skid Tiles upto ₹45 per sqft",
+                "Parking: Anti Skid Tiles upto ₹50 per sqft"
+            ],
+            Wiring: [
+                "Fireproof Wiring: Finolex silver FR or equivalent",
+                "Switch / Socket: Legrand Lyncus / Schneider",
+                "Provision for UPS Wiring: [YES]",
+                "EV Charging point at Ground Floor: [NO]"
+            ],
+            Others: [
+                "Overhead tank: Double layered tank of Apollo / equivalent make, 1500 Ltrs. of Sunplast / equivalent make",
+                "Underground sump: 3000 Ltrs",
+                "Staircase railing: MS Railing with design",
+                "Copper Gas Connection: [NO]"
+            ]
+        },
         highlight: true,
         badge: "Most Popular"
     },
@@ -101,15 +209,68 @@ const pricingPlans: PricingTier[] = [
         gradient: "from-amber-500/30 to-orange-500/30",
         borderGradient: "from-amber-400 via-yellow-400 to-orange-400",
         features: [
-            "Structure: JSW Steel & Ultratech Cement",
-            "Walls: First Class Wire Cut Red Brick",
-            "Ceiling Height: 11 Feet",
-            "Flooring: Premium Tiles/Granite (Upto ₹120/sqft)",
-            "Main Door: Teak Wood (Upto ₹75,000)",
-            "Extras: Solar Heater & 7000L Sump Included",
-            "Electrical: Anchor/Havells Wires",
-            "Plumbing: Hindware Sanitary (Upto ₹80k)"
+            "Structure",
+            "Kitchen",
+            "Bathroom",
+            "Doors & Windows",
+            "Painting",
+            "Flooring",
+            "Wiring",
+            "Others"
         ],
+        featureDetails: {
+            Structure: [
+                "Steel: Fe 550/Fe 550D JSW Steel",
+                "Cement: 53 grade Ultratech",
+                "Aggregates: 20mm & 40mm",
+                "Block work: 9 inch (outer), 4.5 inch (inner) – First Class Wire Cut Red brick",
+                "RCC Mix: M25",
+                "Ceiling height Floor-to-Floor: 11 Feet",
+                "Basement height: 4 feet"
+            ],
+            Kitchen: [
+                "Ceramic Wall Dado: Upto ₹80 per sqft",
+                "Sink: Upto ₹10000 (Premium SS / Granite)",
+                "Sink Faucet: Upto ₹5000",
+                "Sink Accessories: Premium branded"
+            ],
+            Bathroom: [
+                "Ceramic Wall Dado: Upto ₹70 per sqft",
+                "Sanitary & CP fittings: Upto ₹80,000 per 1000 sqft (Hindware/American Standard)",
+                "Bathroom Accessories: Mirror, Soap dish, Towel rail - worth of ₹15,000 per 1000 sqft",
+                "Provision for Solar water heater: [YES]"
+            ],
+            "Doors & Windows": [
+                "Doors: Premium flush doors with veneer/laminate",
+                "Main Door: Teak door & Teak frame upto ₹75,000 including accessories",
+                "Internal Doors: Flush door with premium laminates upto ₹12,000",
+                "Puja Room Door: Teak frame with designer teak door",
+                "Windows: 3 Track with 1 Mesh UPVC ₹700 per sqft premium profiles",
+                "Window grills: Premium designer SS Grill ₹350 per sqft"
+            ],
+            Painting: [
+                "Interior Painting: Birla Putty + Primer + Royale Luxury Emulsion Paint",
+                "Exterior Painting: Primer + Apex Ultima Exterior Emulsion"
+            ],
+            Flooring: [
+                "Living & Dining Flooring: Tiles / Marble upto ₹120 per sqft",
+                "Rooms and Kitchen Flooring: Tiles / Granite upto ₹120 per sqft",
+                "Balcony and Open Area: Anti Skid Tiles upto ₹80 per sqft",
+                "Parking: Anti Skid Tiles upto ₹80 per sqft"
+            ],
+            Wiring: [
+                "Fireproof Wiring: Anchor/Havells premium FRLS",
+                "Switch / Socket: Anchor Roma / Havells premium",
+                "Provision for UPS Wiring: [YES]",
+                "EV Charging point at Ground Floor: [YES]"
+            ],
+            Others: [
+                "Overhead tank: Triple layered tank of Apollo / equivalent make, 2000 Ltrs.",
+                "Underground sump: 7000 Ltrs",
+                "Staircase railing: SS Railing with glass panels",
+                "Copper Gas Connection: [YES]"
+            ]
+        },
         highlight: false,
         badge: "Premium",
         isPremium: true
@@ -148,11 +309,19 @@ export function PremiumPricing({
     showCTASection = true,
 }: PremiumPricingProps = {}) {
     const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
+    const [expandedFeatures, setExpandedFeatures] = useState<Record<string, string | null>>({});
     const containerRef = useRef<HTMLDivElement>(null);
     const { openPopup } = useContactPopup();
 
     const tiers = customTiers || pricingPlans;
     const features = customFeatures || additionalFeatures;
+
+    const toggleFeature = (planName: string, featureName: string) => {
+        setExpandedFeatures(prev => ({
+            ...prev,
+            [planName]: prev[planName] === featureName ? null : featureName
+        }));
+    };
 
     const handlePlanSelect = (planName: string) => {
         try {
@@ -388,24 +557,97 @@ export function PremiumPricing({
                                         </div>
 
                                         {/* Features - flex-grow to push button down */}
-                                        <div className="mb-8 space-y-3 flex-grow">
-                                            {plan.features.map((feature, featureIndex) => (
-                                                <motion.div
-                                                    key={featureIndex}
-                                                    className="flex items-center gap-3"
-                                                    initial={{ opacity: 0, x: -20 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ delay: featureIndex * 0.1 }}
-                                                >
-                                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${isPremiumPlan
-                                                        ? 'bg-amber-100 border border-amber-300'
-                                                        : 'bg-green-100 border border-green-300'
-                                                        }`}>
-                                                        <Check className={`w-3 h-3 ${isPremiumPlan ? 'text-amber-600' : 'text-green-600'}`} />
-                                                    </div>
-                                                    <span className="text-gray-600 text-sm">{feature}</span>
-                                                </motion.div>
-                                            ))}
+                                        <div className="mb-8 space-y-2 flex-grow">
+                                            {plan.features.map((feature, featureIndex) => {
+                                                const isExpanded = expandedFeatures[plan.name] === feature;
+                                                const details = plan.featureDetails?.[feature] || [];
+                                                const hasDetails = details.length > 0;
+
+                                                return (
+                                                    <motion.div
+                                                        key={featureIndex}
+                                                        className="rounded-lg overflow-hidden"
+                                                        initial={{ opacity: 0, x: -20 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: featureIndex * 0.05 }}
+                                                    >
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                if (hasDetails) toggleFeature(plan.name, feature);
+                                                            }}
+                                                            className={`w-full flex items-center justify-between gap-3 py-2 px-3 rounded-lg transition-all ${hasDetails ? 'cursor-pointer hover:bg-gray-50' : 'cursor-default'
+                                                                } ${isExpanded ? (isPremiumPlan ? 'bg-amber-50' : 'bg-blue-50') : ''}`}
+                                                        >
+                                                            <div className="flex items-center gap-3">
+                                                                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${isPremiumPlan
+                                                                    ? 'bg-amber-100 border border-amber-300'
+                                                                    : 'bg-green-100 border border-green-300'
+                                                                    }`}>
+                                                                    <Check className={`w-3 h-3 ${isPremiumPlan ? 'text-amber-600' : 'text-green-600'}`} />
+                                                                </div>
+                                                                <span className="text-gray-700 text-sm font-medium text-left">{feature}</span>
+                                                            </div>
+                                                            {hasDetails && (
+                                                                <motion.div
+                                                                    animate={{ rotate: isExpanded ? 180 : 0 }}
+                                                                    transition={{ duration: 0.2 }}
+                                                                >
+                                                                    <ChevronDown className={`w-4 h-4 ${isPremiumPlan ? 'text-amber-500' : 'text-gray-400'}`} />
+                                                                </motion.div>
+                                                            )}
+                                                        </button>
+
+                                                        <AnimatePresence>
+                                                            {isExpanded && hasDetails && (
+                                                                <motion.div
+                                                                    initial={{ height: 0, opacity: 0 }}
+                                                                    animate={{ height: 'auto', opacity: 1 }}
+                                                                    exit={{ height: 0, opacity: 0 }}
+                                                                    transition={{ duration: 0.2 }}
+                                                                    className="overflow-hidden"
+                                                                >
+                                                                    <div className={`pl-11 pr-3 pb-3 pt-1 space-y-1.5 ${isPremiumPlan ? 'bg-amber-50/50' : 'bg-gray-50/50'} rounded-b-lg`}>
+                                                                        {details.map((detail, detailIndex) => {
+                                                                            // Parse and style [YES] and [NO] markers
+                                                                            const renderDetail = (text: string) => {
+                                                                                if (text.includes('[YES]')) {
+                                                                                    const parts = text.split('[YES]');
+                                                                                    return (
+                                                                                        <>
+                                                                                            {parts[0]}
+                                                                                            <span className="text-green-600 font-semibold">✓ Yes</span>
+                                                                                            {parts[1]}
+                                                                                        </>
+                                                                                    );
+                                                                                }
+                                                                                if (text.includes('[NO]')) {
+                                                                                    const parts = text.split('[NO]');
+                                                                                    return (
+                                                                                        <>
+                                                                                            {parts[0]}
+                                                                                            <span className="text-red-500 font-semibold">✗ No</span>
+                                                                                            {parts[1]}
+                                                                                        </>
+                                                                                    );
+                                                                                }
+                                                                                return text;
+                                                                            };
+
+                                                                            return (
+                                                                                <div key={detailIndex} className="flex items-start gap-2">
+                                                                                    <span className={`text-xs mt-1 ${isPremiumPlan ? 'text-amber-400' : 'text-gray-400'}`}>•</span>
+                                                                                    <span className="text-xs text-gray-600 leading-relaxed">{renderDetail(detail)}</span>
+                                                                                </div>
+                                                                            );
+                                                                        })}
+                                                                    </div>
+                                                                </motion.div>
+                                                            )}
+                                                        </AnimatePresence>
+                                                    </motion.div>
+                                                );
+                                            })}
                                         </div>
 
                                         {/* CTA Button - mt-auto ensures it stays at bottom */}

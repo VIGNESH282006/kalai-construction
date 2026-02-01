@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import emailjs from '@emailjs/browser';
+import confetti from 'canvas-confetti';
 import {
     Calculator,
     ChevronDown,
@@ -20,7 +21,10 @@ import {
     Mail,
     MapPin,
     Ruler,
-    Loader2
+    Loader2,
+    X,
+    MessageCircle,
+    AlertCircle
 } from 'lucide-react';
 
 // EmailJS Configuration
@@ -115,12 +119,16 @@ export function ConstructionCalculator() {
         { id: 'first', work: "First Floor Area", area: 0, unit: "sqft", rate: 2400, icon: Building, category: 'floor' },
         { id: 'second', work: "Second Floor Area", area: 0, unit: "sqft", rate: 2400, icon: Building, category: 'floor' },
         { id: 'third', work: "Third Floor Area", area: 0, unit: "sqft", rate: 2400, icon: Building, category: 'floor' },
-        { id: 'sump', work: "RCC Water Sump", area: 0, unit: "litre", rate: 35, icon: Droplets, category: 'utility' },
-        { id: 'septic', work: "Septic Tank", area: 0, unit: "litre", rate: 20, icon: Droplets, category: 'utility' },
-        { id: 'compound', work: "Compound Wall (5ft)", area: 0, unit: "RFT", rate: 1850, icon: Fence, category: 'compound' },
+        { id: 'sump', work: "RCC Water Sump", area: 0, unit: "litre", rate: 28, icon: Droplets, category: 'utility' },
+        { id: 'septic', work: "Septic Tank", area: 0, unit: "litre", rate: 18, icon: Droplets, category: 'utility' },
+        { id: 'compound', work: "Compound Wall (6ft)", area: 0, unit: "RFT", rate: 1950, icon: Fence, category: 'compound' },
     ]);
 
     const [isLoading, setIsLoading] = useState(false);
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [finalEstimate, setFinalEstimate] = useState(0);
 
     // Get number of floors to display based on selection
     const getVisibleFloorCount = () => {
@@ -186,9 +194,37 @@ export function ConstructionCalculator() {
         return updatedCostItems.filter(item => item.category === 'compound').reduce((sum, item) => sum + calculateCost(item), 0);
     }, [updatedCostItems]);
 
+    // Confetti animation function
+    const triggerConfetti = () => {
+        const end = Date.now() + 2000;
+        const colors = ['#001f3f', '#3b82f6', '#22d3ee', '#fbbf24', '#22c55e'];
+
+        (function frame() {
+            confetti({
+                particleCount: 3,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: colors
+            });
+            confetti({
+                particleCount: 3,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: colors
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        }());
+    };
+
     const handleSubmit = async () => {
         if (!formData.name || !formData.phone || !formData.email || !formData.location) {
-            alert("Please fill all required fields");
+            setErrorMessage('Please fill all required fields');
+            setShowErrorPopup(true);
             return;
         }
 
@@ -231,7 +267,11 @@ export function ConstructionCalculator() {
                 templateParams,
                 EMAILJS_PUBLIC_KEY
             );
-            alert("✅ Estimate request sent successfully! We'll contact you soon.");
+
+            // Store the final estimate and show success popup
+            setFinalEstimate(totalCost);
+            setShowSuccessPopup(true);
+            triggerConfetti();
 
             // Reset form
             setFormData({
@@ -246,7 +286,8 @@ export function ConstructionCalculator() {
             setCostItems(prev => prev.map(item => ({ ...item, area: 0 })));
         } catch (error) {
             console.error('EmailJS Error:', error);
-            alert("❌ Failed to send request. Please try again or contact us directly.");
+            setErrorMessage('Failed to send request. Please try again or contact us directly.');
+            setShowErrorPopup(true);
         } finally {
             setIsLoading(false);
         }
@@ -639,6 +680,156 @@ export function ConstructionCalculator() {
                     </motion.div>
                 </motion.div>
             </motion.div>
+
+            {/* Success Popup */}
+            <AnimatePresence>
+                {showSuccessPopup && (
+                    <motion.div
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setShowSuccessPopup(false)}
+                    >
+                        <motion.div
+                            className="relative bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 text-center overflow-hidden"
+                            initial={{ scale: 0.8, opacity: 0, y: 50 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.8, opacity: 0, y: 50 }}
+                            transition={{ type: "spring", duration: 0.5 }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {/* Close button */}
+                            <button
+                                onClick={() => setShowSuccessPopup(false)}
+                                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                            >
+                                <X className="w-4 h-4 text-gray-600" />
+                            </button>
+
+                            {/* Success Icon */}
+                            <motion.div
+                                className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center"
+                                initial={{ scale: 0, rotate: -180 }}
+                                animate={{ scale: 1, rotate: 0 }}
+                                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                            >
+                                <Check className="w-10 h-10 text-white" />
+                            </motion.div>
+
+                            {/* Title */}
+                            <motion.h3
+                                className="text-2xl font-bold text-[#001f3f] mb-2"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
+                            >
+                                Congratulations!
+                            </motion.h3>
+                            <motion.p
+                                className="text-gray-600 mb-6 w-full flex items-center justify-center"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 }}
+                            >
+                                Your estimated construction cost is ready
+                            </motion.p>
+
+                            {/* Estimate Display */}
+                            <motion.div
+                                className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-6 mb-6 flex flex-col items-center justify-center"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.5 }}
+                            >
+                                <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-2 text-center">
+                                    Total Estimate
+                                </p>
+                                <p className="text-4xl font-bold text-[#001f3f] text-center">
+                                    ₹{finalEstimate.toLocaleString()}
+                                </p>
+                            </motion.div>
+
+                            {/* Action Buttons */}
+                            <motion.div
+                                className="flex gap-3"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.6 }}
+                            >
+                                <a
+                                    href="https://wa.me/919710305090?text=Hi%20I%20just%20got%20an%20estimate%20for%20my%20construction%20project"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-green-200"
+                                >
+                                    <MessageCircle className="w-5 h-5" />
+                                    WhatsApp
+                                </a>
+                                <a
+                                    href="tel:+919710305090"
+                                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-[#001f3f] to-blue-600 hover:from-[#001a35] hover:to-blue-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-200"
+                                >
+                                    <Phone className="w-5 h-5" />
+                                    Call Now
+                                </a>
+                            </motion.div>
+
+                            {/* Disclaimer */}
+                            <motion.p
+                                className="text-xs text-gray-500 mt-4"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.7 }}
+                            >
+                                * This acts as an approximate estimate. Final pricing may vary based on material selection and site conditions.
+                            </motion.p>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Error Popup */}
+            <AnimatePresence>
+                {showErrorPopup && (
+                    <motion.div
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setShowErrorPopup(false)}
+                    >
+                        <motion.div
+                            className="relative bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 text-center"
+                            initial={{ scale: 0.9, opacity: 0, y: 30 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 30 }}
+                            transition={{ type: "spring", duration: 0.4 }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {/* Error Icon */}
+                            <motion.div
+                                className="w-14 h-14 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center"
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+                            >
+                                <AlertCircle className="w-7 h-7 text-red-500" />
+                            </motion.div>
+
+                            <h3 className="text-lg font-bold text-gray-900 mb-2">Oops!</h3>
+                            <p className="text-gray-600 mb-5">{errorMessage}</p>
+
+                            <button
+                                onClick={() => setShowErrorPopup(false)}
+                                className="w-full py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-xl transition-colors"
+                            >
+                                Got it
+                            </button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }
