@@ -374,11 +374,11 @@ export function PremiumPricing({
     };
 
     return (
-        <section className="relative py-20 md:py-32 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+        <section className="relative py-20 md:py-32 bg-linear-to-b from-gray-50 to-white overflow-hidden">
             {/* Light Background Effects */}
             <div className="absolute inset-0">
                 <motion.div
-                    className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-amber-50/50"
+                    className="absolute inset-0 bg-linear-to-br from-blue-50/50 via-purple-50/30 to-amber-50/50"
                 />
 
                 {/* Subtle orbs */}
@@ -447,13 +447,13 @@ export function PremiumPricing({
                             Choose Your
                         </span>
                         <br />
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#001f3f] via-blue-500 to-cyan-400">
+                        <span className="bg-clip-text text-transparent bg-linear-to-r from-[#001f3f] via-blue-500 to-cyan-400">
                             Construction Package
                         </span>
                     </motion.h2>
 
                     <motion.p
-                        className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed !text-center"
+                        className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed text-center!"
                         variants={fadeInUp}
                     >
                         From basic planning to premium construction, we offer comprehensive packages tailored to your budget and requirements.
@@ -480,8 +480,8 @@ export function PremiumPricing({
                                 {plan.badge && (
                                     <motion.div
                                         className={`absolute -top-3 left-1/2 transform -translate-x-1/2 z-20 px-4 py-1.5 rounded-full text-xs font-semibold shadow-lg ${isPremiumPlan
-                                            ? 'bg-gradient-to-r from-amber-500 via-yellow-400 to-orange-500 text-white shadow-amber-200'
-                                            : 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-purple-200'
+                                            ? 'bg-linear-to-r from-amber-500 via-yellow-400 to-orange-500 text-white shadow-amber-200'
+                                            : 'bg-linear-to-r from-indigo-500 to-purple-500 text-white shadow-purple-200'
                                             }`}
                                         initial={{ y: -10, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
@@ -497,7 +497,7 @@ export function PremiumPricing({
 
                                 <motion.div
                                     className={`relative h-full p-8 rounded-3xl border backdrop-blur-xl overflow-visible ${isPremiumPlan
-                                        ? 'bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 border-amber-300 shadow-2xl shadow-amber-100'
+                                        ? 'bg-linear-to-br from-amber-50 via-orange-50 to-yellow-50 border-amber-300 shadow-2xl shadow-amber-100'
                                         : plan.highlight
                                             ? 'bg-white border-blue-300 shadow-xl shadow-blue-100'
                                             : 'bg-white border-gray-200 shadow-lg'
@@ -509,7 +509,7 @@ export function PremiumPricing({
                                     {/* Premium glow effect */}
                                     {isPremiumPlan && (
                                         <motion.div
-                                            className="absolute -inset-1 bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 rounded-3xl opacity-20 blur-xl -z-10"
+                                            className="absolute -inset-1 bg-linear-to-r from-amber-400 via-yellow-300 to-orange-400 rounded-3xl opacity-20 blur-xl -z-10"
                                             animate={{
                                                 opacity: [0.15, 0.25, 0.15],
                                             }}
@@ -522,14 +522,14 @@ export function PremiumPricing({
                                     )}
 
                                     {/* Gradient overlay */}
-                                    <div className={`absolute inset-0 bg-gradient-to-br ${plan.gradient} rounded-3xl ${isPremiumPlan ? 'opacity-60' : 'opacity-40'}`} />
+                                    <div className={`absolute inset-0 bg-linear-to-br ${plan.gradient} rounded-3xl ${isPremiumPlan ? 'opacity-60' : 'opacity-40'}`} />
 
                                     <div className="relative z-10 flex flex-col h-full">
                                         {/* Icon */}
                                         <motion.div
                                             className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${isPremiumPlan
-                                                ? 'bg-gradient-to-br from-amber-400 via-yellow-300 to-orange-400 border-2 border-amber-300 shadow-lg shadow-amber-200'
-                                                : `bg-gradient-to-br ${plan.gradient} border border-gray-200`
+                                                ? 'bg-linear-to-br from-amber-400 via-yellow-300 to-orange-400 border-2 border-amber-300 shadow-lg shadow-amber-200'
+                                                : `bg-linear-to-br ${plan.gradient} border border-gray-200`
                                                 }`}
                                             whileHover={{ scale: 1.1, rotate: 5 }}
                                             transition={{ duration: 0.3 }}
@@ -538,7 +538,7 @@ export function PremiumPricing({
                                         </motion.div>
 
                                         {/* Plan Info */}
-                                        <h3 className={`text-2xl font-bold mb-2 ${isPremiumPlan ? 'bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent' : 'text-gray-900'}`}>
+                                        <h3 className={`text-2xl font-bold mb-2 ${isPremiumPlan ? 'bg-linear-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent' : 'text-gray-900'}`}>
                                             {plan.name}
                                         </h3>
                                         <p className="text-gray-600 text-sm mb-2">{plan.subtitle}</p>
@@ -547,7 +547,7 @@ export function PremiumPricing({
                                         {/* Price */}
                                         <div className="mb-8">
                                             <div className="flex items-baseline gap-2">
-                                                <span className={`text-4xl font-bold ${isPremiumPlan ? 'bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent' : 'text-gray-900'}`}>
+                                                <span className={`text-4xl font-bold ${isPremiumPlan ? 'bg-linear-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent' : 'text-gray-900'}`}>
                                                     ₹{plan.price.toLocaleString()}
                                                 </span>
                                                 <span className="text-gray-600">
@@ -557,7 +557,7 @@ export function PremiumPricing({
                                         </div>
 
                                         {/* Features - flex-grow to push button down */}
-                                        <div className="mb-8 space-y-2 flex-grow">
+                                        <div className="mb-8 space-y-2 grow">
                                             {plan.features.map((feature, featureIndex) => {
                                                 const isExpanded = expandedFeatures[plan.name] === feature;
                                                 const details = plan.featureDetails?.[feature] || [];
@@ -580,7 +580,7 @@ export function PremiumPricing({
                                                                 } ${isExpanded ? (isPremiumPlan ? 'bg-amber-50' : 'bg-blue-50') : ''}`}
                                                         >
                                                             <div className="flex items-center gap-3">
-                                                                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${isPremiumPlan
+                                                                <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${isPremiumPlan
                                                                     ? 'bg-amber-100 border border-amber-300'
                                                                     : 'bg-green-100 border border-green-300'
                                                                     }`}>
@@ -654,9 +654,9 @@ export function PremiumPricing({
                                         <motion.button
                                             onClick={scrollToCalculator}
                                             className={`w-full py-4 px-6 rounded-xl font-medium transition-all mt-auto cursor-pointer ${isPremiumPlan
-                                                ? 'bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 hover:from-amber-600 hover:via-yellow-600 hover:to-orange-600 text-white shadow-lg shadow-amber-200'
+                                                ? 'bg-linear-to-r from-amber-500 via-yellow-500 to-orange-500 hover:from-amber-600 hover:via-yellow-600 hover:to-orange-600 text-white shadow-lg shadow-amber-200'
                                                 : plan.highlight
-                                                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white'
+                                                    ? 'bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white'
                                                     : 'bg-gray-100 border border-gray-300 text-gray-900 hover:bg-gray-200'
                                                 }`}
                                             whileHover={{ scale: 1.02 }}
@@ -732,7 +732,7 @@ export function PremiumPricing({
                         className="text-center"
                         variants={fadeInUp}
                     >
-                        <div className="relative bg-gradient-to-r from-[#001f3f] via-blue-600 to-cyan-600 rounded-3xl p-8 md:p-12 overflow-hidden max-w-4xl mx-auto">
+                        <div className="relative bg-linear-to-r from-[#001f3f] via-blue-600 to-cyan-600 rounded-3xl p-8 md:p-12 overflow-hidden max-w-4xl mx-auto">
                             <div className="relative z-10">
                                 <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white">
                                     Ready to Build Your Dream Home?

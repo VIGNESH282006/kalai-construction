@@ -14,7 +14,7 @@ export default function PackagesPage() {
 
             {/* Hero Section with animation */}
             <motion.div
-                className="pt-24 pb-8 bg-gradient-to-b from-blue-50 to-white"
+                className="pt-24 pb-8 bg-linear-to-b from-blue-50 to-white"
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}

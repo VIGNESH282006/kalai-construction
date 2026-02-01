@@ -133,7 +133,7 @@ export default function OurServicesPage() {
                 transition={{ delay: index * 0.05, duration: 0.5 }}
             >
                 <Card className="bg-white border border-gray-200 shadow-md hover:shadow-2xl hover:border-blue-300 transition-all duration-300 hover:scale-105 group overflow-hidden relative h-[320px] flex flex-col">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+                    <div className={`absolute inset-0 bg-linear-to-br ${service.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
                     <CardHeader className="relative z-10">
                         <div className={`w-16 h-16 ${service.iconBg} rounded-xl mb-4 flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
                             <Icon className={`w-8 h-8 ${service.textColor}`} />
@@ -209,7 +209,7 @@ export default function OurServicesPage() {
 
             <div className="max-w-7xl mx-auto px-6 py-20">
                 {/* Call to Action Section */}
-                <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-12 text-center space-y-6">
+                <div className="bg-linear-to-r from-blue-600 to-blue-800 rounded-2xl p-12 text-center space-y-6">
                     <h3 className="text-3xl md:text-4xl font-bold text-white">
                         Ready to Get Started?
                     </h3>

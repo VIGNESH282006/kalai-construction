@@ -77,7 +77,7 @@ function StatCard({ stat, index }: { stat: CoreStat; index: number }) {
                     className="absolute inset-0 object-cover w-full h-full"
                     priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/50 to-black/30" />
                 <CardContent className="relative z-10 p-6 space-y-2 text-left flex flex-col justify-end h-full">
                     <div>
                         <h3 className="text-5xl font-bold drop-shadow-lg">

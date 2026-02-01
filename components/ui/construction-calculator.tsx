@@ -304,7 +304,7 @@ export function ConstructionCalculator() {
     };
 
     return (
-        <section id="cost-calculator" className="relative py-16 md:py-24 bg-gradient-to-b from-gray-50 via-blue-50/30 to-white overflow-hidden">
+        <section id="cost-calculator" className="relative py-16 md:py-24 bg-linear-to-b from-gray-50 via-blue-50/30 to-white overflow-hidden">
             {/* Background Effects */}
             <div className="absolute inset-0">
                 <motion.div
@@ -344,11 +344,11 @@ export function ConstructionCalculator() {
 
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
                         <span className="text-gray-900">Construction</span>{" "}
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#001f3f] via-blue-500 to-cyan-400">
+                        <span className="bg-clip-text text-transparent bg-linear-to-r from-[#001f3f] via-blue-500 to-cyan-400">
                             Cost Calculator
                         </span>
                     </h2>
-                    <p className="text-gray-600 text-lg max-w-2xl mx-auto !text-center">
+                    <p className="text-gray-600 text-lg max-w-2xl mx-auto text-center!">
                         Get an instant estimate for your dream home construction in Chennai
                     </p>
                 </motion.div>
@@ -474,7 +474,7 @@ export function ConstructionCalculator() {
                                         key={pkg.id}
                                         onClick={() => handleFormChange('package', pkg.id)}
                                         className={`relative p-4 rounded-xl border-2 transition-all ${formData.package === pkg.id
-                                            ? `border-${pkg.color}-500 bg-gradient-to-br ${pkg.gradient} text-white shadow-lg`
+                                            ? `border-${pkg.color}-500 bg-linear-to-br ${pkg.gradient} text-white shadow-lg`
                                             : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
                                             }`}
                                         whileHover={{ scale: 1.02 }}
@@ -645,7 +645,7 @@ export function ConstructionCalculator() {
 
                             {/* Total */}
                             <motion.div
-                                className="p-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 text-white"
+                                className="p-4 rounded-2xl bg-linear-to-r from-green-500 to-emerald-500 text-white"
                                 animate={{ scale: totalCost > 0 ? [1, 1.02, 1] : 1 }}
                                 transition={{ duration: 0.3 }}
                                 key={totalCost}
@@ -661,7 +661,7 @@ export function ConstructionCalculator() {
                         <motion.button
                             onClick={handleSubmit}
                             disabled={isLoading}
-                            className="w-full mt-6 py-4 px-6 bg-gradient-to-r from-[#001f3f] via-blue-500 to-cyan-400 hover:from-[#001a35] hover:via-blue-600 hover:to-cyan-500 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="w-full mt-6 py-4 px-6 bg-linear-to-r from-[#001f3f] via-blue-500 to-cyan-400 hover:from-[#001a35] hover:via-blue-600 hover:to-cyan-500 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                             whileHover={{ scale: isLoading ? 1 : 1.02 }}
                             whileTap={{ scale: isLoading ? 1 : 0.98 }}
                         >
@@ -709,7 +709,7 @@ export function ConstructionCalculator() {
 
                             {/* Success Icon */}
                             <motion.div
-                                className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center"
+                                className="w-20 h-20 mx-auto mb-6 rounded-full bg-linear-to-br from-green-400 to-emerald-500 flex items-center justify-center"
                                 initial={{ scale: 0, rotate: -180 }}
                                 animate={{ scale: 1, rotate: 0 }}
                                 transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
@@ -737,7 +737,7 @@ export function ConstructionCalculator() {
 
                             {/* Estimate Display */}
                             <motion.div
-                                className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-6 mb-6 flex flex-col items-center justify-center"
+                                className="bg-linear-to-br from-gray-50 to-blue-50 rounded-2xl p-6 mb-6 flex flex-col items-center justify-center"
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.5 }}
@@ -761,14 +761,14 @@ export function ConstructionCalculator() {
                                     href="https://wa.me/919710305090?text=Hi%20I%20just%20got%20an%20estimate%20for%20my%20construction%20project"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-green-200"
+                                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-linear-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-green-200"
                                 >
                                     <MessageCircle className="w-5 h-5" />
                                     WhatsApp
                                 </a>
                                 <a
                                     href="tel:+919710305090"
-                                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-[#001f3f] to-blue-600 hover:from-[#001a35] hover:to-blue-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-200"
+                                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-linear-to-r from-[#001f3f] to-blue-600 hover:from-[#001a35] hover:to-blue-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-200"
                                 >
                                     <Phone className="w-5 h-5" />
                                     Call Now

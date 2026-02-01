@@ -60,7 +60,7 @@ export function FeatureSteps({
 
                 <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-12 items-start lg:items-center" style={{ gap: 0 }}>
                     {/* Feature List - Left Side */}
-                    <div className="space-y-4 lg:space-y-6 !mt-0 [&>*:first-child]:mt-0 order-2 lg:order-1">
+                    <div className="space-y-4 lg:space-y-6 mt-0! [&>*:first-child]:mt-0 order-2 lg:order-1">
                         {features.map((feature, index) => (
                             <motion.button
                                 key={index}
@@ -77,7 +77,7 @@ export function FeatureSteps({
                             >
                                 <motion.div
                                     className={cn(
-                                        "w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-lg",
+                                        "w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center shrink-0 font-bold text-lg",
                                         index === currentFeature
                                             ? "bg-blue-600 text-white"
                                             : "bg-gray-200 text-gray-600"
@@ -142,7 +142,7 @@ export function FeatureSteps({
                                                 height={600}
                                                 priority
                                             />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                                            <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
                                             <div className="absolute bottom-4 left-4 right-4">
                                                 <span className="inline-block px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded-full">
                                                     {feature.title || feature.step}

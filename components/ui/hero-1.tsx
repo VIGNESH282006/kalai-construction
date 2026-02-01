@@ -120,7 +120,7 @@ export function HeroLanding(props: HeroLandingProps) {
                         <h1 className={`${getTitleSizeClasses()} font-semibold tracking-tight text-balance text-white`}>
                             {title}
                         </h1>
-                        <p className="mt-6 sm:mt-8 text-base sm:text-lg font-medium text-pretty text-white/80 sm:text-xl/8">
+                        <p className="mt-6 sm:mt-8 text-base font-medium text-pretty text-white/80 sm:text-xl/8">
                             {description}
                         </p>
 

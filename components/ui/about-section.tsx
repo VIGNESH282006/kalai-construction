@@ -69,7 +69,7 @@ export function AboutSection({
                                     height={700}
                                     className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                                <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent" />
                             </div>
 
                             {/* Decorative accent lines */}
