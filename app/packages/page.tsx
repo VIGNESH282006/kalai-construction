@@ -5,6 +5,7 @@ import { Navbar } from '@/components/ui/navbar';
 import { PremiumPricing } from '@/components/ui/premium-pricing';
 import { ConstructionCalculator } from '@/components/ui/construction-calculator';
 import { ScrollToTop } from '@/components/ui/scroll-to-top';
+import { FaqsSection } from '@/components/ui/faqs-1';
 
 export default function PackagesPage() {
     return (
@@ -57,7 +58,18 @@ export default function PackagesPage() {
                 <ConstructionCalculator />
             </motion.div>
 
+            {/* FAQ Section with animation */}
+            <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.9 }}
+                className="pb-16"
+            >
+                <FaqsSection />
+            </motion.div>
+
             <ScrollToTop />
         </main>
     );
 }
+

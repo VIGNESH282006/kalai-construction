@@ -158,7 +158,7 @@ export default function OurServicesPage() {
 
             {/* Hero Section */}
             <SplitHero
-                title="Comprehensive Construction Services in Tiruvallur"
+                title="Comprehensive Construction Services in Chennai & Tiruvallur"
                 description="At Kalai Construction, we offer a wide range of construction services tailored to meet the diverse needs of our clients. Your trusted partner in bringing construction visions to reality."
                 image1Src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop"
                 image2Src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop"
