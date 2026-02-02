@@ -165,9 +165,9 @@ function ContactPopupModal({ isOpen, onClose }: { isOpen: boolean; onClose: () =
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
                         className="fixed inset-0 z-50 flex items-center justify-center p-4"
                     >
-                        <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+                        <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
                             {/* Header */}
-                            <div className="relative bg-gradient-to-r from-slate-900 to-cyan-600 px-6 py-8 rounded-t-3xl">
+                            <div className="relative bg-gradient-to-r from-slate-900 to-cyan-600 px-6 py-8 rounded-t-3xl flex-shrink-0">
                                 <button
                                     onClick={onClose}
                                     className="absolute top-4 right-4 p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors text-white"
@@ -178,110 +178,112 @@ function ContactPopupModal({ isOpen, onClose }: { isOpen: boolean; onClose: () =
                                 <p className="text-blue-100 mt-2">We'd love to hear from you. Send us a message!</p>
                             </div>
 
-                            {/* Form */}
-                            <form onSubmit={handleSubmit} className="p-6 space-y-5">
-                                {/* Name */}
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Name <span className="text-red-500">*</span>
-                                    </label>
-                                    <div className="relative">
-                                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                        <input
-                                            type="text"
-                                            placeholder="Your name"
-                                            value={formData.name}
-                                            onChange={(e) => handleChange('name', e.target.value)}
-                                            className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
-                                        />
+                            {/* Scrollable Form Container */}
+                            <div className="flex-1 overflow-y-auto contact-popup-scroll">
+                                <form onSubmit={handleSubmit} className="p-6 space-y-5">
+                                    {/* Name */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Name <span className="text-red-500">*</span>
+                                        </label>
+                                        <div className="relative">
+                                            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                            <input
+                                                type="text"
+                                                placeholder="Your name"
+                                                value={formData.name}
+                                                onChange={(e) => handleChange('name', e.target.value)}
+                                                className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* Email */}
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Email <span className="text-red-500">*</span>
-                                    </label>
-                                    <div className="relative">
-                                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                        <input
-                                            type="email"
-                                            placeholder="your@email.com"
-                                            value={formData.email}
-                                            onChange={(e) => handleChange('email', e.target.value)}
-                                            className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
-                                        />
+                                    {/* Email */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Email <span className="text-red-500">*</span>
+                                        </label>
+                                        <div className="relative">
+                                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                            <input
+                                                type="email"
+                                                placeholder="your@email.com"
+                                                value={formData.email}
+                                                onChange={(e) => handleChange('email', e.target.value)}
+                                                className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* Phone */}
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Phone <span className="text-red-500">*</span>
-                                    </label>
-                                    <div className="relative">
-                                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                        <input
-                                            type="tel"
-                                            placeholder="+91 XXXXX XXXXX"
-                                            value={formData.phone}
-                                            onChange={(e) => handleChange('phone', e.target.value)}
-                                            className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
-                                        />
+                                    {/* Phone */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Phone <span className="text-red-500">*</span>
+                                        </label>
+                                        <div className="relative">
+                                            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                            <input
+                                                type="tel"
+                                                placeholder="+91 XXXXX XXXXX"
+                                                value={formData.phone}
+                                                onChange={(e) => handleChange('phone', e.target.value)}
+                                                className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* Subject */}
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Subject
-                                    </label>
-                                    <div className="relative">
-                                        <FileText className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                        <input
-                                            type="text"
-                                            placeholder="What's this about?"
-                                            value={formData.subject}
-                                            onChange={(e) => handleChange('subject', e.target.value)}
-                                            className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
-                                        />
+                                    {/* Subject */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Subject
+                                        </label>
+                                        <div className="relative">
+                                            <FileText className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                            <input
+                                                type="text"
+                                                placeholder="What's this about?"
+                                                value={formData.subject}
+                                                onChange={(e) => handleChange('subject', e.target.value)}
+                                                className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* Message */}
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Message <span className="text-red-500">*</span>
-                                    </label>
-                                    <div className="relative">
-                                        <MessageSquare className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                                        <textarea
-                                            placeholder="Tell us about your project..."
-                                            value={formData.message}
-                                            onChange={(e) => handleChange('message', e.target.value)}
-                                            rows={4}
-                                            className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white resize-none"
-                                        />
+                                    {/* Message */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Message <span className="text-red-500">*</span>
+                                        </label>
+                                        <div className="relative">
+                                            <MessageSquare className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                                            <textarea
+                                                placeholder="Tell us about your project..."
+                                                value={formData.message}
+                                                onChange={(e) => handleChange('message', e.target.value)}
+                                                rows={4}
+                                                className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 hover:bg-white resize-none"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <motion.button
-                                    type="submit"
-                                    disabled={isLoading}
-                                    className="w-full py-4 px-6 bg-gradient-to-r from-slate-900 to-cyan-600 hover:from-slate-800 hover:to-cyan-500 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
-                                    whileHover={{ scale: isLoading ? 1 : 1.02 }}
-                                    whileTap={{ scale: isLoading ? 1 : 0.98 }}
-                                >
-                                    {isLoading ? (
-                                        <>
-                                            <Loader2 className="w-5 h-5 animate-spin" />
-                                            Sending...
-                                        </>
-                                    ) : (
-                                        'Send Message'
-                                    )}
-                                </motion.button>
-                            </form>
+                                    <motion.button
+                                        type="submit"
+                                        disabled={isLoading}
+                                        className="w-full py-4 px-6 bg-gradient-to-r from-slate-900 to-cyan-600 hover:from-slate-800 hover:to-cyan-500 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                                        whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                                        whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                                    >
+                                        {isLoading ? (
+                                            <>
+                                                <Loader2 className="w-5 h-5 animate-spin" />
+                                                Sending...
+                                            </>
+                                        ) : (
+                                            'Send Message'
+                                        )}
+                                    </motion.button>
+                                </form>
+                            </div>
                         </div>
                     </motion.div>
 
