@@ -11,38 +11,10 @@ export default function GalleryPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     // All your gallery images
-    const galleryImages = [
-        { title: 'Construction Project 1', src: '/Gallery-pic/1.jpg' },
-        { title: 'Construction Project 2', src: '/Gallery-pic/3-g.jpg' },
-        { title: 'Construction Project 3', src: '/Gallery-pic/6.jpg' },
-        { title: 'Construction Project 4', src: '/Gallery-pic/7.jpg' },
-        { title: 'Construction Project 5', src: '/Gallery-pic/9-g.jpg' },
-        { title: 'Construction Project 6', src: '/Gallery-pic/11.jpg' },
-        { title: 'Construction Project 7', src: '/Gallery-pic/12-g.jpg' },
-        { title: 'Construction Project 8', src: '/Gallery-pic/13.jpg' },
-        { title: 'Construction Project 9', src: '/Gallery-pic/14-g.jpg' },
-        { title: 'Construction Project 10', src: '/Gallery-pic/15.jpg' },
-        { title: 'Construction Project 11', src: '/Gallery-pic/18.jpg' },
-        { title: 'Construction Project 12', src: '/Gallery-pic/19.jpg' },
-        { title: 'Construction Project 13', src: '/Gallery-pic/21.jpg' },
-        { title: 'Construction Project 14', src: '/Gallery-pic/22-g.jpg' },
-        { title: 'Construction Project 15', src: '/Gallery-pic/23.jpg' },
-        { title: 'Construction Project 16', src: '/Gallery-pic/24.jpg' },
-        { title: 'Construction Project 17', src: '/Gallery-pic/26.jpg' },
-        { title: 'Construction Project 18', src: '/Gallery-pic/28-g.jpg' },
-        { title: 'Construction Project 19', src: '/Gallery-pic/29-g.jpg' },
-        { title: 'Construction Project 20', src: '/Gallery-pic/30.jpg' },
-        { title: 'Construction Project 21', src: '/Gallery-pic/31.jpg' },
-        { title: 'Construction Project 22', src: '/Gallery-pic/32.jpg' },
-        { title: 'Construction Project 23', src: '/Gallery-pic/33.jpg' },
-        { title: 'Construction Project 24', src: '/Gallery-pic/34.jpg' },
-        { title: 'Construction Project 25', src: '/Gallery-pic/35.jpg' },
-        { title: 'Construction Project 26', src: '/Gallery-pic/36.jpg' },
-        { title: 'Construction Project 27', src: '/Gallery-pic/37.jpg' },
-        { title: 'Construction Project 28', src: '/Gallery-pic/38.jpg' },
-        { title: 'Construction Project 29', src: '/Gallery-pic/40.jpg' },
-        { title: 'Construction Project 30', src: '/Gallery-pic/41.jpg' },
-    ];
+    const galleryImages = Array.from({ length: 27 }, (_, i) => ({
+        title: `Construction Project ${i + 1}`,
+        src: `/Gallery-pic/project-${i + 1}.webp`,
+    }));
 
     const handleCardClick = (index: number) => {
         setSelectedImageIndex(index);
@@ -77,7 +49,7 @@ export default function GalleryPage() {
                     <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
                         Project Gallery
                     </h2>
-                    <p className="text-xl !text-center text-gray-700 max-w-6xl mx-auto leading-relaxed">
+                    <p className="text-xl text-center text-gray-700 max-w-6xl mx-auto leading-relaxed">
                         Browse through our collection of completed projects. Click on any image to view it in detail.
                     </p>
                 </div>
