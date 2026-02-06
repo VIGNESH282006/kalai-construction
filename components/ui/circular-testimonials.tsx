@@ -144,7 +144,7 @@ export const CircularTestimonials = ({
                         </div>
                     </div>
                     <a
-                        href="https://cdeck.eksconstruction.in/"
+                        href="https://404.com/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="bg-[#E3000F] text-white px-10 py-4 text-lg rounded-full font-bold flex items-center gap-2 hover:bg-[#c4000d] transition-all w-fit group shadow-lg shadow-red-500/20"
@@ -174,7 +174,7 @@ export const CircularTestimonials = ({
                             </div>
                         </div>
                         <a
-                            href="https://cdeck.eksconstruction.in/"
+                            href="https://404.com/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="bg-[#E3000F] text-white px-10 py-4 text-lg rounded-full font-bold flex items-center gap-2 hover:bg-[#c4000d] transition-all w-fit group shadow-lg shadow-red-500/20"
